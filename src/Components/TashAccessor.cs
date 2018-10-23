@@ -35,6 +35,10 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
             var tashApp = await GetTashAppAsync();
             var fileSystemService = new FileSystemService();
             tashApp.Start(fileSystemService, errorsAndInfos);
+            if (errorsAndInfos.AnyErrors()) {
+                return errorsAndInfos;
+            }
+
             await Task.Delay(TimeSpan.FromSeconds(10));
 
             try {
