@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Aspenlaub.Net.GitHub.CSharp.Dvin.Components;
 using Aspenlaub.Net.GitHub.CSharp.Dvin.Entities;
 using Aspenlaub.Net.GitHub.CSharp.Dvin.Extensions;
 using Aspenlaub.Net.GitHub.CSharp.Dvin.Repositories;
@@ -32,7 +33,8 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
             } catch {
             }
             var tashApp = await GetTashAppAsync();
-            tashApp.Start(errorsAndInfos);
+            var fileSystemService = new FileSystemService();
+            tashApp.Start(fileSystemService, errorsAndInfos);
             await Task.Delay(TimeSpan.FromSeconds(10));
 
             try {
