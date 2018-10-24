@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
@@ -42,10 +43,29 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
 
             var currentProcess = Process.GetCurrentProcess();
             var statusCode = await sut.PutControllableProcessAsync(currentProcess);
-            Assert.AreEqual(HttpStatusCode.Created, statusCode);
+            Assert.IsTrue(statusCode == HttpStatusCode.Created || statusCode == HttpStatusCode.NoContent);
             var process = await sut.GetControllableProcessAsync(currentProcess.Id);
             Assert.IsNotNull(process);
             Assert.AreEqual(currentProcess.ProcessName, process.Title);
+        }
+
+        [TestMethod]
+        public async Task CanConfirmAliveness() {
+            ITashAccessor sut = new TashAccessor();
+            await LaunchTashAppIfNotRunning(sut);
+
+            var currentProcess = Process.GetCurrentProcess();
+            var statusCode = await sut.PutControllableProcessAsync(currentProcess);
+            Assert.IsTrue(statusCode == HttpStatusCode.Created || statusCode == HttpStatusCode.NoContent);
+
+            var now = DateTime.Now.AddHours(1);
+            statusCode = await sut.ConfirmAliveAsync(currentProcess.Id, now, true);
+            Assert.AreEqual(HttpStatusCode.NoContent, statusCode);
+
+            var process = await sut.GetControllableProcessAsync(currentProcess.Id);
+            Assert.IsNotNull(process);
+            Assert.AreEqual(now, process.ConfirmedAt);
+            Assert.IsTrue(process.Busy);
         }
     }
 }

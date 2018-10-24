@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using Aspenlaub.Net.GitHub.CSharp.Dvin.Components;
 using Aspenlaub.Net.GitHub.CSharp.Dvin.Entities;
 using Aspenlaub.Net.GitHub.CSharp.Dvin.Extensions;
@@ -11,9 +5,15 @@ using Aspenlaub.Net.GitHub.CSharp.Dvin.Repositories;
 using Aspenlaub.Net.GitHub.CSharp.PeghStandard.Entities;
 using Aspenlaub.Net.GitHub.CSharp.PeghStandard.Interfaces;
 using Aspenlaub.Net.GitHub.CSharp.Tash;
-using Aspenlaub.Net.GitHub.CSharp.TashClient.Interfaces;
 using Aspenlaub.Net.GitHub.CSharp.Tash.Model;
+using Aspenlaub.Net.GitHub.CSharp.TashClient.Interfaces;
 using Microsoft.OData.Client;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
     public class TashAccessor : ITashAccessor {
@@ -59,23 +59,59 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
 
         public async Task<ControllableProcess> GetControllableProcessAsync(int processId) {
             var context = new DefaultContainer(new Uri(BaseUrl));
+            if (!await ProcessExists(context, processId)) {
+                return null;
+            }
+
             var process = await context.ControllableProcesses.ByKey(processId).GetValueAsync();
             return process;
         }
 
         public async Task<HttpStatusCode> PutControllableProcessAsync(Process process) {
-            var controllableProcess = new ControllableProcess {
-                ProcessId = process.Id,
-                Title = process.ProcessName,
-                Busy = false,
-                ConfirmedAt = DateTimeOffset.Now,
-                LaunchCommand = process.MainModule.FileName
-            };
             var context = new DefaultContainer(new Uri(BaseUrl));
-            context.AddToControllableProcesses(controllableProcess);
+            ControllableProcess controllableProcess;
+            if (await ProcessExists(context, process.Id)) {
+                controllableProcess = await context.ControllableProcesses.ByKey(process.Id).GetValueAsync();
+                controllableProcess.Title = process.ProcessName;
+                controllableProcess.Busy = false;
+                controllableProcess.ConfirmedAt = DateTimeOffset.Now;
+                controllableProcess.LaunchCommand = process.MainModule.FileName;
+                context.UpdateObject(controllableProcess);
+            } else {
+                controllableProcess = new ControllableProcess {
+                    ProcessId = process.Id,
+                    Title = process.ProcessName,
+                    Busy = false,
+                    ConfirmedAt = DateTimeOffset.Now,
+                    LaunchCommand = process.MainModule.FileName
+                };
+                context.AddToControllableProcesses(controllableProcess);
+            }
+
             var response = await context.SaveChangesAsync(SaveChangesOptions.ReplaceOnUpdate);
             var statusCode = response.Select(r => (HttpStatusCode)r.StatusCode).FirstOrDefault();
             return statusCode;
+        }
+
+        public async Task<HttpStatusCode> ConfirmAliveAsync(int processId, DateTime now, bool busy) {
+            var context = new DefaultContainer(new Uri(BaseUrl));
+            if (!await ProcessExists(context, processId)) {
+                return HttpStatusCode.NotFound;
+            }
+
+            var controllableProcess = await context.ControllableProcesses.ByKey(processId).GetValueAsync();
+            controllableProcess.ConfirmedAt = now;
+            controllableProcess.Busy = busy;
+            context.UpdateObject(controllableProcess);
+            var response = await context.SaveChangesAsync(SaveChangesOptions.None);
+            var statusCode = response.Select(r => (HttpStatusCode)r.StatusCode).FirstOrDefault();
+            return statusCode;
+        }
+
+        private async Task<bool> ProcessExists(DefaultContainer context, int processId) {
+            var query = (DataServiceQuery<ControllableProcess>)context.ControllableProcesses.Where(p => p.ProcessId == processId || p.ProcessId == -4711); // Hack, hack, hack
+            var controllableProcesses = await query.ExecuteAsync();
+            return controllableProcesses.Any();
         }
     }
 }

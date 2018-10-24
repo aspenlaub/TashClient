@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
@@ -13,5 +14,6 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Interfaces {
         Task<IEnumerable<ControllableProcess>> GetControllableProcessesAsync();
         Task<ControllableProcess> GetControllableProcessAsync(int processId);
         Task<HttpStatusCode> PutControllableProcessAsync(Process process);
+        Task<HttpStatusCode> ConfirmAliveAsync(int processId, DateTime now, bool busy);
     }
 }
