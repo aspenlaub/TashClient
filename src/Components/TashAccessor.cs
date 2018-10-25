@@ -108,10 +108,74 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
             return statusCode;
         }
 
+        public async Task<IEnumerable<ControllableProcessTask>> GetControllableProcessTasksAsync() {
+            var context = new DefaultContainer(new Uri(BaseUrl));
+            var processTasks = await context.ControllableProcessTasks.ExecuteAsync();
+            return processTasks;
+        }
+
+        public async Task<ControllableProcessTask> GetControllableProcessTaskAsync(Guid taskId) {
+            var context = new DefaultContainer(new Uri(BaseUrl));
+            if (!await ProcessTaskExists(context, taskId)) {
+                return null;
+            }
+
+            var processTask = await context.ControllableProcessTasks.ByKey(taskId).GetValueAsync();
+            return processTask;
+        }
+
+        public async Task<HttpStatusCode> PutControllableProcessTaskAsync(ControllableProcessTask processTask) {
+            var context = new DefaultContainer(new Uri(BaseUrl));
+            ControllableProcessTask controllableProcessTask;
+            if (await ProcessTaskExists(context, processTask.Id)) {
+                controllableProcessTask = await context.ControllableProcessTasks.ByKey(processTask.Id).GetValueAsync();
+                controllableProcessTask.ProcessId = processTask.ProcessId;
+                controllableProcessTask.Type = processTask.Type;
+                controllableProcessTask.ControlName = processTask.ControlName;
+                controllableProcessTask.Text = processTask.Text;
+                controllableProcessTask.Status = processTask.Status;
+                context.UpdateObject(controllableProcessTask);
+            } else {
+                controllableProcessTask = new ControllableProcessTask {
+                    Id = processTask.Id,
+                    ProcessId = processTask.ProcessId,
+                    Type = processTask.Type,
+                    ControlName = processTask.ControlName,
+                    Text = processTask.Text,
+                    Status = processTask.Status
+                };
+                context.AddToControllableProcessTasks(controllableProcessTask);
+            }
+
+            var response = await context.SaveChangesAsync(SaveChangesOptions.ReplaceOnUpdate);
+            var statusCode = response.Select(r => (HttpStatusCode)r.StatusCode).FirstOrDefault();
+            return statusCode;
+        }
+
+        public async Task<HttpStatusCode> ConfirmStatusAsync(Guid taskId, ControllableProcessTaskStatus status) {
+            var context = new DefaultContainer(new Uri(BaseUrl));
+            if (!await ProcessTaskExists(context, taskId)) {
+                return HttpStatusCode.NotFound;
+            }
+
+            var controllableProcessTask = await context.ControllableProcessTasks.ByKey(taskId).GetValueAsync();
+            controllableProcessTask.Status = status;
+            context.UpdateObject(controllableProcessTask);
+            var response = await context.SaveChangesAsync(SaveChangesOptions.None);
+            var statusCode = response.Select(r => (HttpStatusCode)r.StatusCode).FirstOrDefault();
+            return statusCode;
+        }
+
         private async Task<bool> ProcessExists(DefaultContainer context, int processId) {
             var query = (DataServiceQuery<ControllableProcess>)context.ControllableProcesses.Where(p => p.ProcessId == processId || p.ProcessId == -4711); // Hack, hack, hack
             var controllableProcesses = await query.ExecuteAsync();
             return controllableProcesses.Any();
+        }
+
+        private async Task<bool> ProcessTaskExists(DefaultContainer context, Guid taskId) {
+            var query = (DataServiceQuery<ControllableProcessTask>)context.ControllableProcessTasks.Where(p => p.Id == taskId || p.Id == Guid.NewGuid()); // Hack, hack, hack
+            var controllableProcessTasks = await query.ExecuteAsync();
+            return controllableProcessTasks.Any();
         }
     }
 }
