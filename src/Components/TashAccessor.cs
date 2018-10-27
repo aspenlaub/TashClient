@@ -73,7 +73,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
             if (await ProcessExists(context, process.Id)) {
                 controllableProcess = await context.ControllableProcesses.ByKey(process.Id).GetValueAsync();
                 controllableProcess.Title = process.ProcessName;
-                controllableProcess.Busy = false;
+                controllableProcess.Status = ControllableProcessStatus.Idle;
                 controllableProcess.ConfirmedAt = DateTimeOffset.Now;
                 controllableProcess.LaunchCommand = process.MainModule.FileName;
                 context.UpdateObject(controllableProcess);
@@ -81,7 +81,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
                 controllableProcess = new ControllableProcess {
                     ProcessId = process.Id,
                     Title = process.ProcessName,
-                    Busy = false,
+                    Status = ControllableProcessStatus.Idle,
                     ConfirmedAt = DateTimeOffset.Now,
                     LaunchCommand = process.MainModule.FileName
                 };
@@ -93,7 +93,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
             return statusCode;
         }
 
-        public async Task<HttpStatusCode> ConfirmAliveAsync(int processId, DateTime now, bool busy) {
+        public async Task<HttpStatusCode> ConfirmAliveAsync(int processId, DateTime now, ControllableProcessStatus status) {
             var context = new DefaultContainer(new Uri(BaseUrl));
             if (!await ProcessExists(context, processId)) {
                 return HttpStatusCode.NotFound;
@@ -101,7 +101,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
 
             var controllableProcess = await context.ControllableProcesses.ByKey(processId).GetValueAsync();
             controllableProcess.ConfirmedAt = now;
-            controllableProcess.Busy = busy;
+            controllableProcess.Status = status;
             context.UpdateObject(controllableProcess);
             var response = await context.SaveChangesAsync(SaveChangesOptions.None);
             var statusCode = response.Select(r => (HttpStatusCode)r.StatusCode).FirstOrDefault();

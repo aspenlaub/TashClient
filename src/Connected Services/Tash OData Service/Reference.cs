@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generation date: 2018-10-25 20:03:06
+// Generation date: 2018-10-27 17:33:15
 namespace Aspenlaub.Net.GitHub.CSharp.Tash.Model
 {
     /// <summary>
@@ -48,14 +48,14 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash.Model
         /// Create a new ControllableProcess object.
         /// </summary>
         /// <param name="processId">Initial value of ProcessId.</param>
-        /// <param name="busy">Initial value of Busy.</param>
+        /// <param name="status">Initial value of Status.</param>
         /// <param name="confirmedAt">Initial value of ConfirmedAt.</param>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public static ControllableProcess CreateControllableProcess(int processId, bool busy, global::System.DateTimeOffset confirmedAt)
+        public static ControllableProcess CreateControllableProcess(int processId, global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessStatus status, global::System.DateTimeOffset confirmedAt)
         {
             ControllableProcess controllableProcess = new ControllableProcess();
             controllableProcess.ProcessId = processId;
-            controllableProcess.Busy = busy;
+            controllableProcess.Status = status;
             controllableProcess.ConfirmedAt = confirmedAt;
             return controllableProcess;
         }
@@ -126,27 +126,27 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash.Model
         partial void OnLaunchCommandChanging(string value);
         partial void OnLaunchCommandChanged();
         /// <summary>
-        /// There are no comments for Property Busy in the schema.
+        /// There are no comments for Property Status in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public bool Busy
+        public global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessStatus Status
         {
             get
             {
-                return this._Busy;
+                return this._Status;
             }
             set
             {
-                this.OnBusyChanging(value);
-                this._Busy = value;
-                this.OnBusyChanged();
-                this.OnPropertyChanged("Busy");
+                this.OnStatusChanging(value);
+                this._Status = value;
+                this.OnStatusChanged();
+                this.OnPropertyChanged("Status");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private bool _Busy;
-        partial void OnBusyChanging(bool value);
-        partial void OnBusyChanged();
+        private global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessStatus _Status;
+        partial void OnStatusChanging(global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessStatus value);
+        partial void OnStatusChanged();
         /// <summary>
         /// There are no comments for Property ConfirmedAt in the schema.
         /// </summary>
@@ -388,6 +388,15 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash.Model
         }
     }
     /// <summary>
+    /// There are no comments for ControllableProcessStatus in the schema.
+    /// </summary>
+    public enum ControllableProcessStatus
+    {
+        Idle = 0,
+        Busy = 1,
+        Dead = 2
+    }
+    /// <summary>
     /// There are no comments for ControllableProcessTaskType in the schema.
     /// </summary>
     public enum ControllableProcessTaskType
@@ -544,7 +553,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
         <Property Name=""ProcessId"" Type=""Edm.Int32"" Nullable=""false"" />
         <Property Name=""Title"" Type=""Edm.String"" />
         <Property Name=""LaunchCommand"" Type=""Edm.String"" />
-        <Property Name=""Busy"" Type=""Edm.Boolean"" Nullable=""false"" />
+        <Property Name=""Status"" Type=""Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessStatus"" Nullable=""false"" />
         <Property Name=""ConfirmedAt"" Type=""Edm.DateTimeOffset"" Nullable=""false"" />
       </EntityType>
       <EntityType Name=""ControllableProcessTask"">
@@ -558,6 +567,11 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
         <Property Name=""Text"" Type=""Edm.String"" />
         <Property Name=""Status"" Type=""Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTaskStatus"" Nullable=""false"" />
       </EntityType>
+      <EnumType Name=""ControllableProcessStatus"">
+        <Member Name=""Idle"" Value=""0"" />
+        <Member Name=""Busy"" Value=""1"" />
+        <Member Name=""Dead"" Value=""2"" />
+      </EnumType>
       <EnumType Name=""ControllableProcessTaskType"">
         <Member Name=""Reset"" Value=""0"" />
         <Member Name=""SelectComboItem"" Value=""1"" />

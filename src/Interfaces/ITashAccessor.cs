@@ -15,7 +15,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Interfaces {
         Task<IEnumerable<ControllableProcess>> GetControllableProcessesAsync();
         Task<ControllableProcess> GetControllableProcessAsync(int processId);
         Task<HttpStatusCode> PutControllableProcessAsync(Process process);
-        Task<HttpStatusCode> ConfirmAliveAsync(int processId, DateTime now, bool busy);
+        Task<HttpStatusCode> ConfirmAliveAsync(int processId, DateTime now, ControllableProcessStatus status);
 
         Task<IEnumerable<ControllableProcessTask>> GetControllableProcessTasksAsync();
         Task<ControllableProcessTask> GetControllableProcessTaskAsync(Guid taskId);

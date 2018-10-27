@@ -60,13 +60,13 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
             Assert.IsTrue(statusCode == HttpStatusCode.Created || statusCode == HttpStatusCode.NoContent);
 
             var now = DateTime.Now.AddHours(1);
-            statusCode = await sut.ConfirmAliveAsync(currentProcess.Id, now, true);
+            statusCode = await sut.ConfirmAliveAsync(currentProcess.Id, now, ControllableProcessStatus.Busy);
             Assert.AreEqual(HttpStatusCode.NoContent, statusCode);
 
             var process = await sut.GetControllableProcessAsync(currentProcess.Id);
             Assert.IsNotNull(process);
             Assert.AreEqual(now, process.ConfirmedAt);
-            Assert.IsTrue(process.Busy);
+            Assert.AreEqual(ControllableProcessStatus.Busy, process.Status);
         }
 
         [TestMethod]
