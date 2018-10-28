@@ -16,10 +16,17 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Interfaces {
         Task<ControllableProcess> GetControllableProcessAsync(int processId);
         Task<HttpStatusCode> PutControllableProcessAsync(Process process);
         Task<HttpStatusCode> ConfirmAliveAsync(int processId, DateTime now, ControllableProcessStatus status);
+        Task<HttpStatusCode> ConfirmDeadAsync(int processId);
+        void ConfirmDeadWhileClosing(int processId);
+        bool MarkTaskAsCompleted(ControllableProcessTask theTaskIAmProcessing, int processId, ControllableProcessTaskType type, string controlName, string text);
+        Task<ControllableProcessTask> PickRequestedTask(int processId);
+        Task AssumeDeath(Func<ControllableProcess, bool> condition);
+        Task<ControllableProcess> FindIdleProcess(Func<ControllableProcess, bool> condition);
 
         Task<IEnumerable<ControllableProcessTask>> GetControllableProcessTasksAsync();
         Task<ControllableProcessTask> GetControllableProcessTaskAsync(Guid taskId);
         Task<HttpStatusCode> PutControllableProcessTaskAsync(ControllableProcessTask processTask);
         Task<HttpStatusCode> ConfirmStatusAsync(Guid taskId, ControllableProcessTaskStatus status);
+        Task AwaitCompletionAsync(Guid taskId, TimeSpan timeSpan);
     }
 }

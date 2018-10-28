@@ -112,12 +112,141 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
         private ControllableProcessTask CreateControllableProcessTask() {
             return new ControllableProcessTask {
                 Id = Guid.NewGuid(),
-                ProcessId = 4711,
+                ProcessId = new Random().Next(1, 32767),
                 Type = ControllableProcessTaskType.SelectComboItem,
                 ControlName = "ScriptComboBox",
                 Status = ControllableProcessTaskStatus.Processing,
                 Text = "This is my selection"
             };
+        }
+
+        [TestMethod]
+        public async Task CanConfirmDeadAsync() {
+            ITashAccessor sut = new TashAccessor();
+            await LaunchTashAppIfNotRunning(sut);
+
+            var currentProcess = Process.GetCurrentProcess();
+            var statusCode = await sut.PutControllableProcessAsync(currentProcess);
+            Assert.IsTrue(statusCode == HttpStatusCode.Created || statusCode == HttpStatusCode.NoContent);
+
+            var now = DateTime.Now;
+            await sut.ConfirmDeadAsync(currentProcess.Id);
+
+            var process = await sut.GetControllableProcessAsync(currentProcess.Id);
+            Assert.IsNotNull(process);
+            Assert.AreEqual(ControllableProcessStatus.Dead, process.Status);
+            Assert.IsTrue(process.ConfirmedAt >= now);
+        }
+
+        [TestMethod]
+        public async Task CanConfirmDeadWhileClosing() {
+            ITashAccessor sut = new TashAccessor();
+            await LaunchTashAppIfNotRunning(sut);
+
+            var currentProcess = Process.GetCurrentProcess();
+            var statusCode = await sut.PutControllableProcessAsync(currentProcess);
+            Assert.IsTrue(statusCode == HttpStatusCode.Created || statusCode == HttpStatusCode.NoContent);
+
+            var now = DateTime.Now;
+            sut.ConfirmDeadWhileClosing(currentProcess.Id);
+
+            var process = await sut.GetControllableProcessAsync(currentProcess.Id);
+            Assert.IsNotNull(process);
+            Assert.AreEqual(ControllableProcessStatus.Dead, process.Status);
+            Assert.IsTrue(process.ConfirmedAt >= now);
+        }
+
+        [TestMethod]
+        public async Task CanGetOkayToMarkTaskAsCompleted() {
+            ITashAccessor sut = new TashAccessor();
+            await LaunchTashAppIfNotRunning(sut);
+
+            var controllableProcessTask = CreateControllableProcessTask();
+            var statusCode = await sut.PutControllableProcessTaskAsync(controllableProcessTask);
+            Assert.AreEqual(HttpStatusCode.Created, statusCode);
+
+            Assert.IsTrue(sut.MarkTaskAsCompleted(controllableProcessTask, controllableProcessTask.ProcessId, controllableProcessTask.Type, controllableProcessTask.ControlName, controllableProcessTask.Text));
+            Assert.IsFalse(sut.MarkTaskAsCompleted(null, controllableProcessTask.ProcessId, controllableProcessTask.Type, controllableProcessTask.ControlName, controllableProcessTask.Text));
+            Assert.IsFalse(sut.MarkTaskAsCompleted(controllableProcessTask, controllableProcessTask.ProcessId + 1, controllableProcessTask.Type, controllableProcessTask.ControlName, controllableProcessTask.Text));
+            Assert.IsFalse(sut.MarkTaskAsCompleted(controllableProcessTask, controllableProcessTask.ProcessId, controllableProcessTask.Type, controllableProcessTask.ControlName + "X", controllableProcessTask.Text));
+            Assert.IsFalse(sut.MarkTaskAsCompleted(controllableProcessTask, controllableProcessTask.ProcessId, controllableProcessTask.Type, controllableProcessTask.ControlName, controllableProcessTask.Text + "X"));
+        }
+
+        [TestMethod]
+        public async Task CanPickRequestedTask() {
+            ITashAccessor sut = new TashAccessor();
+            await LaunchTashAppIfNotRunning(sut);
+
+            var controllableProcessTask = CreateControllableProcessTask();
+            controllableProcessTask.Status = ControllableProcessTaskStatus.Requested;
+            var statusCode = await sut.PutControllableProcessTaskAsync(controllableProcessTask);
+            Assert.AreEqual(HttpStatusCode.Created, statusCode);
+
+            var pickedProcessTask = await sut.PickRequestedTask(controllableProcessTask.ProcessId);
+            Assert.IsNotNull(pickedProcessTask);
+            Assert.AreEqual(controllableProcessTask.Id, pickedProcessTask.Id);
+
+            controllableProcessTask.Status = ControllableProcessTaskStatus.Processing;
+            statusCode = await sut.PutControllableProcessTaskAsync(controllableProcessTask);
+            Assert.AreEqual(HttpStatusCode.NoContent, statusCode);
+
+            pickedProcessTask = await sut.PickRequestedTask(controllableProcessTask.ProcessId);
+            Assert.IsNull(pickedProcessTask);
+        }
+
+        [TestMethod]
+        public async Task CanAssumeDeath() {
+            ITashAccessor sut = new TashAccessor();
+            await LaunchTashAppIfNotRunning(sut);
+
+            var currentProcess = Process.GetCurrentProcess();
+            var statusCode = await sut.PutControllableProcessAsync(currentProcess);
+            Assert.IsTrue(statusCode == HttpStatusCode.Created || statusCode == HttpStatusCode.NoContent);
+
+            await sut.AssumeDeath(p => p.ProcessId == currentProcess.Id);
+
+            var process = await sut.GetControllableProcessAsync(currentProcess.Id);
+            Assert.IsNotNull(process);
+            Assert.AreEqual(ControllableProcessStatus.Dead, process.Status);
+        }
+
+        [TestMethod]
+        public async Task CanFindIdleProcess() {
+            ITashAccessor sut = new TashAccessor();
+            await LaunchTashAppIfNotRunning(sut);
+
+            var currentProcess = Process.GetCurrentProcess();
+            var statusCode = await sut.PutControllableProcessAsync(currentProcess);
+            Assert.IsTrue(statusCode == HttpStatusCode.Created || statusCode == HttpStatusCode.NoContent);
+
+            var process = await sut.FindIdleProcess(p => p.ProcessId == currentProcess.Id);
+            Assert.IsNotNull(process);
+            Assert.AreEqual(currentProcess.Id, process.ProcessId);
+        }
+
+        [TestMethod]
+        public async Task CanAwaitCompletionAsync() {
+            ITashAccessor sut = new TashAccessor();
+            await LaunchTashAppIfNotRunning(sut);
+
+            var controllableProcessTask = CreateControllableProcessTask();
+            controllableProcessTask.Status = ControllableProcessTaskStatus.Processing;
+            var statusCode = await sut.PutControllableProcessTaskAsync(controllableProcessTask);
+            Assert.AreEqual(HttpStatusCode.Created, statusCode);
+
+            var now = DateTime.Now;
+            await sut.AwaitCompletionAsync(controllableProcessTask.Id, TimeSpan.FromSeconds(1));
+            var elapsedMilliSeconds = DateTime.Now.Subtract(now).TotalMilliseconds;
+            Assert.IsTrue(elapsedMilliSeconds >= 1000);
+
+            controllableProcessTask.Status = ControllableProcessTaskStatus.Completed;
+            statusCode = await sut.PutControllableProcessTaskAsync(controllableProcessTask);
+            Assert.AreEqual(HttpStatusCode.NoContent, statusCode);
+
+            now = DateTime.Now;
+            await sut.AwaitCompletionAsync(controllableProcessTask.Id, TimeSpan.FromSeconds(1));
+            elapsedMilliSeconds = DateTime.Now.Subtract(now).TotalMilliseconds;
+            Assert.IsTrue(elapsedMilliSeconds < 100);
         }
     }
 }

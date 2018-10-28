@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Aspenlaub.Net.GitHub.CSharp.TashClient.Helpers;
 
 namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
     public class TashAccessor : ITashAccessor {
@@ -108,6 +109,15 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
             return statusCode;
         }
 
+        public async Task<HttpStatusCode> ConfirmDeadAsync(int processId) {
+            return await ConfirmAliveAsync(processId, DateTime.Now, ControllableProcessStatus.Dead);
+        }
+
+        public void ConfirmDeadWhileClosing(int processId) {
+            var task = Task.Run(async () => { await ConfirmDeadAsync(processId); });
+            task.Wait();
+        }
+
         public async Task<IEnumerable<ControllableProcessTask>> GetControllableProcessTasksAsync() {
             var context = new DefaultContainer(new Uri(BaseUrl));
             var processTasks = await context.ControllableProcessTasks.ExecuteAsync();
@@ -176,6 +186,39 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
             var query = (DataServiceQuery<ControllableProcessTask>)context.ControllableProcessTasks.Where(p => p.Id == taskId || p.Id == Guid.NewGuid()); // Hack, hack, hack
             var controllableProcessTasks = await query.ExecuteAsync();
             return controllableProcessTasks.Any();
+        }
+
+        public bool MarkTaskAsCompleted(ControllableProcessTask theTaskIAmProcessing, int processId, ControllableProcessTaskType type, string controlName, string text) {
+            return theTaskIAmProcessing != null
+                   && theTaskIAmProcessing.Status == ControllableProcessTaskStatus.Processing
+                   && theTaskIAmProcessing.ProcessId == processId
+                   && theTaskIAmProcessing.Type == type
+                   && theTaskIAmProcessing.ControlName == controlName
+                   && theTaskIAmProcessing.Text == text;
+        }
+
+        public async Task<ControllableProcessTask> PickRequestedTask(int processId) {
+            var tasks = await GetControllableProcessTasksAsync();
+            return tasks.FirstOrDefault(t => t.ProcessId == processId && t.Status == ControllableProcessTaskStatus.Requested);
+        }
+
+        public async Task AssumeDeath(Func<ControllableProcess, bool> condition) {
+            var processes = await GetControllableProcessesAsync();
+            foreach (var process in processes.Where(p => condition(p) && p.Status != ControllableProcessStatus.Dead)) {
+                await ConfirmAliveAsync(process.ProcessId, DateTime.Now, ControllableProcessStatus.Dead);
+            }
+        }
+
+        public async Task<ControllableProcess> FindIdleProcess(Func<ControllableProcess, bool> condition) {
+            var processes = await GetControllableProcessesAsync();
+            return processes.Where(p => condition(p) && p.Status == ControllableProcessStatus.Idle).OrderByDescending(p => p.ConfirmedAt).FirstOrDefault();
+        }
+
+        public async Task AwaitCompletionAsync(Guid taskId, TimeSpan timeSpan) {
+            await Wait.UntilAsync(async () => {
+                var task = await GetControllableProcessTaskAsync(taskId);
+                return task?.Status == ControllableProcessTaskStatus.Completed;
+            }, TimeSpan.FromSeconds(10));
         }
     }
 }
