@@ -219,9 +219,10 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
             var statusCode = await sut.PutControllableProcessAsync(currentProcess);
             Assert.IsTrue(statusCode == HttpStatusCode.Created || statusCode == HttpStatusCode.NoContent);
 
-            var process = await sut.FindIdleProcess(p => p.ProcessId == currentProcess.Id);
-            Assert.IsNotNull(process);
-            Assert.AreEqual(currentProcess.Id, process.ProcessId);
+            var findIdleProcessResult = await sut.FindIdleProcess(p => p.ProcessId == currentProcess.Id);
+            Assert.IsTrue(findIdleProcessResult.AnyHandshake);
+            Assert.IsNotNull(findIdleProcessResult.ControllableProcess);
+            Assert.AreEqual(currentProcess.Id, findIdleProcessResult.ControllableProcess.ProcessId);
         }
 
         [TestMethod]
@@ -235,18 +236,20 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
             Assert.AreEqual(HttpStatusCode.Created, statusCode);
 
             var now = DateTime.Now;
-            await sut.AwaitCompletionAsync(controllableProcessTask.Id, TimeSpan.FromSeconds(1));
+            var task = await sut.AwaitCompletionAsync(controllableProcessTask.Id, 1000);
             var elapsedMilliSeconds = DateTime.Now.Subtract(now).TotalMilliseconds;
             Assert.IsTrue(elapsedMilliSeconds >= 1000);
+            Assert.AreEqual(ControllableProcessTaskStatus.Processing, task.Status);
 
             controllableProcessTask.Status = ControllableProcessTaskStatus.Completed;
             statusCode = await sut.PutControllableProcessTaskAsync(controllableProcessTask);
             Assert.AreEqual(HttpStatusCode.NoContent, statusCode);
 
             now = DateTime.Now;
-            await sut.AwaitCompletionAsync(controllableProcessTask.Id, TimeSpan.FromSeconds(1));
+            task = await sut.AwaitCompletionAsync(controllableProcessTask.Id, 1000);
             elapsedMilliSeconds = DateTime.Now.Subtract(now).TotalMilliseconds;
             Assert.IsTrue(elapsedMilliSeconds < 100);
+            Assert.AreEqual(ControllableProcessTaskStatus.Completed, task.Status);
         }
     }
 }

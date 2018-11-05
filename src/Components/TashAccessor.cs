@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Aspenlaub.Net.GitHub.CSharp.TashClient.Entities;
 using Aspenlaub.Net.GitHub.CSharp.TashClient.Helpers;
 
 namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
@@ -209,16 +210,48 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
             }
         }
 
-        public async Task<ControllableProcess> FindIdleProcess(Func<ControllableProcess, bool> condition) {
-            var processes = await GetControllableProcessesAsync();
-            return processes.Where(p => condition(p) && p.Status == ControllableProcessStatus.Idle).OrderByDescending(p => p.ConfirmedAt).FirstOrDefault();
+        public async Task<IFindIdleProcessResult> FindIdleProcess(Func<ControllableProcess, bool> condition) {
+            var processes = (await GetControllableProcessesAsync()).Where(p => condition(p)).ToList();
+            if (!processes.Any()) { return new FindIdleProcessResult { AnyHandshake = false };}
+
+            IFindIdleProcessResult result = new FindIdleProcessResult { AnyHandshake = true };
+
+            var process = processes.Where(p => p.Status == ControllableProcessStatus.Idle).OrderByDescending(p => p.ConfirmedAt).FirstOrDefault();
+            if (process != null) {
+                result.ControllableProcess = process;
+                result.BestNonIdleProcessStatus = ControllableProcessStatus.Idle;
+                return result;
+            }
+
+            var nonIdleProcess = processes.FirstOrDefault(p => p.Status == ControllableProcessStatus.Busy);
+            result.BestNonIdleProcessStatus = nonIdleProcess == null ? ControllableProcessStatus.Dead : ControllableProcessStatus.Busy;
+            return result;
         }
 
-        public async Task AwaitCompletionAsync(Guid taskId, TimeSpan timeSpan) {
-            await Wait.UntilAsync(async () => {
-                var task = await GetControllableProcessTaskAsync(taskId);
-                return task?.Status == ControllableProcessTaskStatus.Completed;
-            }, TimeSpan.FromSeconds(10));
+        public async Task<ControllableProcessTask> AwaitCompletionAsync(Guid taskId, int milliSecondsToAttemptWhileRequestedOrProcessing) {
+            const int internalInMilliSeconds = 100;
+            ControllableProcessTask task;
+
+            do {
+                await Wait.UntilAsync(async () => {
+                    task = await GetControllableProcessTaskAsync(taskId);
+                    return task?.Status == ControllableProcessTaskStatus.Completed;
+                }, TimeSpan.FromMilliseconds(internalInMilliSeconds));
+
+                task = await GetControllableProcessTaskAsync(taskId);
+                if (task.Status == ControllableProcessTaskStatus.Completed) {
+                    return task;
+                }
+
+                var process = await GetControllableProcessAsync(task.ProcessId);
+                if (process?.Status == ControllableProcessStatus.Dead) {
+                    return task;
+                }
+
+                milliSecondsToAttemptWhileRequestedOrProcessing -= internalInMilliSeconds;
+            } while (0 < milliSecondsToAttemptWhileRequestedOrProcessing && (task.Status == ControllableProcessTaskStatus.Processing || task.Status == ControllableProcessTaskStatus.Requested));
+
+            return task;
         }
     }
 }
