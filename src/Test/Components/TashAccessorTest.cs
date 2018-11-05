@@ -220,7 +220,6 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
             Assert.IsTrue(statusCode == HttpStatusCode.Created || statusCode == HttpStatusCode.NoContent);
 
             var findIdleProcessResult = await sut.FindIdleProcess(p => p.ProcessId == currentProcess.Id);
-            Assert.IsTrue(findIdleProcessResult.AnyHandshake);
             Assert.IsNotNull(findIdleProcessResult.ControllableProcess);
             Assert.AreEqual(currentProcess.Id, findIdleProcessResult.ControllableProcess.ProcessId);
         }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generation date: 2018-10-27 17:33:15
+// Generation date: 2018-11-05 18:06:26
 namespace Aspenlaub.Net.GitHub.CSharp.Tash.Model
 {
     /// <summary>
@@ -370,6 +370,28 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash.Model
         partial void OnStatusChanging(global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTaskStatus value);
         partial void OnStatusChanged();
         /// <summary>
+        /// There are no comments for Property ErrorMessage in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        public string ErrorMessage
+        {
+            get
+            {
+                return this._ErrorMessage;
+            }
+            set
+            {
+                this.OnErrorMessageChanging(value);
+                this._ErrorMessage = value;
+                this.OnErrorMessageChanged();
+                this.OnPropertyChanged("ErrorMessage");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private string _ErrorMessage;
+        partial void OnErrorMessageChanging(string value);
+        partial void OnErrorMessageChanged();
+        /// <summary>
         /// This event is raised when the value of the property is changed
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
@@ -394,7 +416,8 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash.Model
     {
         Idle = 0,
         Busy = 1,
-        Dead = 2
+        Dead = 2,
+        DoesNotExist = 3
     }
     /// <summary>
     /// There are no comments for ControllableProcessTaskType in the schema.
@@ -413,7 +436,8 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash.Model
         Requested = 0,
         Processing = 1,
         BadRequest = 2,
-        Completed = 3
+        Completed = 3,
+        Failed = 4
     }
     /// <summary>
     /// Class containing all extension methods
@@ -566,11 +590,13 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
         <Property Name=""ControlName"" Type=""Edm.String"" />
         <Property Name=""Text"" Type=""Edm.String"" />
         <Property Name=""Status"" Type=""Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTaskStatus"" Nullable=""false"" />
+        <Property Name=""ErrorMessage"" Type=""Edm.String"" />
       </EntityType>
       <EnumType Name=""ControllableProcessStatus"">
         <Member Name=""Idle"" Value=""0"" />
         <Member Name=""Busy"" Value=""1"" />
         <Member Name=""Dead"" Value=""2"" />
+        <Member Name=""DoesNotExist"" Value=""3"" />
       </EnumType>
       <EnumType Name=""ControllableProcessTaskType"">
         <Member Name=""Reset"" Value=""0"" />
@@ -582,6 +608,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
         <Member Name=""Processing"" Value=""1"" />
         <Member Name=""BadRequest"" Value=""2"" />
         <Member Name=""Completed"" Value=""3"" />
+        <Member Name=""Failed"" Value=""4"" />
       </EnumType>
     </Schema>
     <Schema Namespace=""Aspenlaub.Net.GitHub.CSharp.Tash"" xmlns=""http://docs.oasis-open.org/odata/ns/edm"">

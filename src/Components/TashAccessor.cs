@@ -212,19 +212,19 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
 
         public async Task<IFindIdleProcessResult> FindIdleProcess(Func<ControllableProcess, bool> condition) {
             var processes = (await GetControllableProcessesAsync()).Where(p => condition(p)).ToList();
-            if (!processes.Any()) { return new FindIdleProcessResult { AnyHandshake = false };}
+            if (!processes.Any()) { return new FindIdleProcessResult { BestProcessStatus = ControllableProcessStatus.DoesNotExist };}
 
-            IFindIdleProcessResult result = new FindIdleProcessResult { AnyHandshake = true };
+            IFindIdleProcessResult result = new FindIdleProcessResult();
 
             var process = processes.Where(p => p.Status == ControllableProcessStatus.Idle).OrderByDescending(p => p.ConfirmedAt).FirstOrDefault();
             if (process != null) {
                 result.ControllableProcess = process;
-                result.BestNonIdleProcessStatus = ControllableProcessStatus.Idle;
+                result.BestProcessStatus = ControllableProcessStatus.Idle;
                 return result;
             }
 
             var nonIdleProcess = processes.FirstOrDefault(p => p.Status == ControllableProcessStatus.Busy);
-            result.BestNonIdleProcessStatus = nonIdleProcess == null ? ControllableProcessStatus.Dead : ControllableProcessStatus.Busy;
+            result.BestProcessStatus = nonIdleProcess == null ? ControllableProcessStatus.Dead : ControllableProcessStatus.Busy;
             return result;
         }
 
