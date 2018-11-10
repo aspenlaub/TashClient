@@ -14,8 +14,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Aspenlaub.Net.GitHub.CSharp.Pegh.Helpers;
 using Aspenlaub.Net.GitHub.CSharp.TashClient.Entities;
-using Aspenlaub.Net.GitHub.CSharp.TashClient.Helpers;
 
 namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
     public class TashAccessor : ITashAccessor {
