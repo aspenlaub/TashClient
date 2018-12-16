@@ -5,7 +5,6 @@ using Aspenlaub.Net.GitHub.CSharp.Dvin.Repositories;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces;
 using Aspenlaub.Net.GitHub.CSharp.Tash;
-using Aspenlaub.Net.GitHub.CSharp.Tash.Model;
 using Aspenlaub.Net.GitHub.CSharp.TashClient.Interfaces;
 using Microsoft.OData.Client;
 using System;

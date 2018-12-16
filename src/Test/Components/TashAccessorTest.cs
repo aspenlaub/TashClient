@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
-using Aspenlaub.Net.GitHub.CSharp.Tash.Model;
+using Aspenlaub.Net.GitHub.CSharp.Tash;
 using Aspenlaub.Net.GitHub.CSharp.TashClient.Components;
 using Aspenlaub.Net.GitHub.CSharp.TashClient.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -1,4 +1,4 @@
-﻿using Aspenlaub.Net.GitHub.CSharp.Tash.Model;
+﻿using Aspenlaub.Net.GitHub.CSharp.Tash;
 using Aspenlaub.Net.GitHub.CSharp.TashClient.Interfaces;
 
 namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Entities {

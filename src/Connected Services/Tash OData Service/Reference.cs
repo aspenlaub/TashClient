@@ -8,9 +8,157 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generation date: 2018-11-05 18:06:26
-namespace Aspenlaub.Net.GitHub.CSharp.Tash.Model
+// Generation date: 2018-12-16 14:10:21
+namespace Aspenlaub.Net.GitHub.CSharp.Tash
 {
+    /// <summary>
+    /// There are no comments for DefaultContainer in the schema.
+    /// </summary>
+    public partial class DefaultContainer : global::Microsoft.OData.Client.DataServiceContext
+    {
+        /// <summary>
+        /// Initialize a new DefaultContainer object.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        public DefaultContainer(global::System.Uri serviceRoot) : 
+                base(serviceRoot, global::Microsoft.OData.Client.ODataProtocolVersion.V4)
+        {
+            this.OnContextCreated();
+            this.Format.LoadServiceModel = GeneratedEdmModel.GetInstance;
+            this.Format.UseJson();
+        }
+        partial void OnContextCreated();
+        /// <summary>
+        /// There are no comments for ControllableProcesses in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        public global::Microsoft.OData.Client.DataServiceQuery<ControllableProcess> ControllableProcesses
+        {
+            get
+            {
+                if ((this._ControllableProcesses == null))
+                {
+                    this._ControllableProcesses = base.CreateQuery<ControllableProcess>("ControllableProcesses");
+                }
+                return this._ControllableProcesses;
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private global::Microsoft.OData.Client.DataServiceQuery<ControllableProcess> _ControllableProcesses;
+        /// <summary>
+        /// There are no comments for ControllableProcessTasks in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        public global::Microsoft.OData.Client.DataServiceQuery<ControllableProcessTask> ControllableProcessTasks
+        {
+            get
+            {
+                if ((this._ControllableProcessTasks == null))
+                {
+                    this._ControllableProcessTasks = base.CreateQuery<ControllableProcessTask>("ControllableProcessTasks");
+                }
+                return this._ControllableProcessTasks;
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private global::Microsoft.OData.Client.DataServiceQuery<ControllableProcessTask> _ControllableProcessTasks;
+        /// <summary>
+        /// There are no comments for ControllableProcesses in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        public void AddToControllableProcesses(ControllableProcess controllableProcess)
+        {
+            base.AddObject("ControllableProcesses", controllableProcess);
+        }
+        /// <summary>
+        /// There are no comments for ControllableProcessTasks in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        public void AddToControllableProcessTasks(ControllableProcessTask controllableProcessTask)
+        {
+            base.AddObject("ControllableProcessTasks", controllableProcessTask);
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        private abstract class GeneratedEdmModel
+        {
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+            private static global::Microsoft.OData.Edm.IEdmModel ParsedModel = LoadModelFromString();
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+            private const string Edmx = @"<edmx:Edmx Version=""4.0"" xmlns:edmx=""http://docs.oasis-open.org/odata/ns/edmx"">
+  <edmx:DataServices>
+    <Schema Namespace=""Aspenlaub.Net.GitHub.CSharp.Tash"" xmlns=""http://docs.oasis-open.org/odata/ns/edm"">
+      <EntityType Name=""ControllableProcess"">
+        <Key>
+          <PropertyRef Name=""ProcessId"" />
+        </Key>
+        <Property Name=""ProcessId"" Type=""Edm.Int32"" Nullable=""false"" />
+        <Property Name=""Title"" Type=""Edm.String"" />
+        <Property Name=""LaunchCommand"" Type=""Edm.String"" />
+        <Property Name=""Status"" Type=""Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessStatus"" Nullable=""false"" />
+        <Property Name=""ConfirmedAt"" Type=""Edm.DateTimeOffset"" Nullable=""false"" />
+      </EntityType>
+      <EntityType Name=""ControllableProcessTask"">
+        <Key>
+          <PropertyRef Name=""Id"" />
+        </Key>
+        <Property Name=""Id"" Type=""Edm.Guid"" Nullable=""false"" />
+        <Property Name=""ProcessId"" Type=""Edm.Int32"" Nullable=""false"" />
+        <Property Name=""Type"" Type=""Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskType"" Nullable=""false"" />
+        <Property Name=""ControlName"" Type=""Edm.String"" />
+        <Property Name=""Text"" Type=""Edm.String"" />
+        <Property Name=""Status"" Type=""Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskStatus"" Nullable=""false"" />
+        <Property Name=""ErrorMessage"" Type=""Edm.String"" />
+      </EntityType>
+      <EnumType Name=""ControllableProcessStatus"">
+        <Member Name=""Idle"" Value=""0"" />
+        <Member Name=""Busy"" Value=""1"" />
+        <Member Name=""Dead"" Value=""2"" />
+        <Member Name=""DoesNotExist"" Value=""3"" />
+      </EnumType>
+      <EnumType Name=""ControllableProcessTaskType"">
+        <Member Name=""Reset"" Value=""0"" />
+        <Member Name=""SelectComboItem"" Value=""1"" />
+        <Member Name=""PressButton"" Value=""2"" />
+      </EnumType>
+      <EnumType Name=""ControllableProcessTaskStatus"">
+        <Member Name=""Requested"" Value=""0"" />
+        <Member Name=""Processing"" Value=""1"" />
+        <Member Name=""BadRequest"" Value=""2"" />
+        <Member Name=""Completed"" Value=""3"" />
+        <Member Name=""Failed"" Value=""4"" />
+      </EnumType>
+      <EntityContainer Name=""DefaultContainer"">
+        <EntitySet Name=""ControllableProcesses"" EntityType=""Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcess"" />
+        <EntitySet Name=""ControllableProcessTasks"" EntityType=""Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTask"" />
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>";
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+            public static global::Microsoft.OData.Edm.IEdmModel GetInstance()
+            {
+                return ParsedModel;
+            }
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+            private static global::Microsoft.OData.Edm.IEdmModel LoadModelFromString()
+            {
+                global::System.Xml.XmlReader reader = CreateXmlReader(Edmx);
+                try
+                {
+                    return global::Microsoft.OData.Edm.Csdl.CsdlReader.Parse(reader);
+                }
+                finally
+                {
+                    ((global::System.IDisposable)(reader)).Dispose();
+                }
+            }
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+            private static global::System.Xml.XmlReader CreateXmlReader(string edmxToParse)
+            {
+                return global::System.Xml.XmlReader.Create(new global::System.IO.StringReader(edmxToParse));
+            }
+        }
+    }
     /// <summary>
     /// There are no comments for ControllableProcessSingle in the schema.
     /// </summary>
@@ -42,6 +190,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash.Model
     /// ProcessId
     /// </KeyProperties>
     [global::Microsoft.OData.Client.Key("ProcessId")]
+    [global::Microsoft.OData.Client.EntitySet("ControllableProcesses")]
     public partial class ControllableProcess : global::Microsoft.OData.Client.BaseEntityType, global::System.ComponentModel.INotifyPropertyChanged
     {
         /// <summary>
@@ -51,7 +200,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash.Model
         /// <param name="status">Initial value of Status.</param>
         /// <param name="confirmedAt">Initial value of ConfirmedAt.</param>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public static ControllableProcess CreateControllableProcess(int processId, global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessStatus status, global::System.DateTimeOffset confirmedAt)
+        public static ControllableProcess CreateControllableProcess(int processId, global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessStatus status, global::System.DateTimeOffset confirmedAt)
         {
             ControllableProcess controllableProcess = new ControllableProcess();
             controllableProcess.ProcessId = processId;
@@ -129,7 +278,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash.Model
         /// There are no comments for Property Status in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessStatus Status
+        public global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessStatus Status
         {
             get
             {
@@ -144,8 +293,8 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash.Model
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessStatus _Status;
-        partial void OnStatusChanging(global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessStatus value);
+        private global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessStatus _Status;
+        partial void OnStatusChanging(global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessStatus value);
         partial void OnStatusChanged();
         /// <summary>
         /// There are no comments for Property ConfirmedAt in the schema.
@@ -218,6 +367,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash.Model
     /// Id
     /// </KeyProperties>
     [global::Microsoft.OData.Client.Key("Id")]
+    [global::Microsoft.OData.Client.EntitySet("ControllableProcessTasks")]
     public partial class ControllableProcessTask : global::Microsoft.OData.Client.BaseEntityType, global::System.ComponentModel.INotifyPropertyChanged
     {
         /// <summary>
@@ -228,7 +378,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash.Model
         /// <param name="type">Initial value of Type.</param>
         /// <param name="status">Initial value of Status.</param>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public static ControllableProcessTask CreateControllableProcessTask(global::System.Guid ID, int processId, global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTaskType type, global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTaskStatus status)
+        public static ControllableProcessTask CreateControllableProcessTask(global::System.Guid ID, int processId, global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskType type, global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskStatus status)
         {
             ControllableProcessTask controllableProcessTask = new ControllableProcessTask();
             controllableProcessTask.Id = ID;
@@ -285,7 +435,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash.Model
         /// There are no comments for Property Type in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTaskType Type
+        public global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskType Type
         {
             get
             {
@@ -300,8 +450,8 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash.Model
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTaskType _Type;
-        partial void OnTypeChanging(global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTaskType value);
+        private global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskType _Type;
+        partial void OnTypeChanging(global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskType value);
         partial void OnTypeChanged();
         /// <summary>
         /// There are no comments for Property ControlName in the schema.
@@ -351,7 +501,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash.Model
         /// There are no comments for Property Status in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTaskStatus Status
+        public global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskStatus Status
         {
             get
             {
@@ -366,8 +516,8 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash.Model
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTaskStatus _Status;
-        partial void OnStatusChanging(global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTaskStatus value);
+        private global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskStatus _Status;
+        partial void OnStatusChanging(global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskStatus value);
         partial void OnStatusChanged();
         /// <summary>
         /// There are no comments for Property ErrorMessage in the schema.
@@ -445,203 +595,50 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash.Model
     public static class ExtensionMethods
     {
         /// <summary>
-        /// Get an entity of type global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcess as global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessSingle specified by key from an entity set
+        /// Get an entity of type global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcess as global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessSingle specified by key from an entity set
         /// </summary>
         /// <param name="source">source entity set</param>
         /// <param name="keys">dictionary with the names and values of keys</param>
-        public static global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessSingle ByKey(this global::Microsoft.OData.Client.DataServiceQuery<global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcess> source, global::System.Collections.Generic.Dictionary<string, object> keys)
+        public static global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessSingle ByKey(this global::Microsoft.OData.Client.DataServiceQuery<global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcess> source, global::System.Collections.Generic.Dictionary<string, object> keys)
         {
-            return new global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessSingle(source.Context, source.GetKeyPath(global::Microsoft.OData.Client.Serializer.GetKeyString(source.Context, keys)));
+            return new global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessSingle(source.Context, source.GetKeyPath(global::Microsoft.OData.Client.Serializer.GetKeyString(source.Context, keys)));
         }
         /// <summary>
-        /// Get an entity of type global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcess as global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessSingle specified by key from an entity set
+        /// Get an entity of type global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcess as global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessSingle specified by key from an entity set
         /// </summary>
         /// <param name="source">source entity set</param>
         /// <param name="processId">The value of processId</param>
-        public static global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessSingle ByKey(this global::Microsoft.OData.Client.DataServiceQuery<global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcess> source,
+        public static global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessSingle ByKey(this global::Microsoft.OData.Client.DataServiceQuery<global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcess> source,
             int processId)
         {
             global::System.Collections.Generic.Dictionary<string, object> keys = new global::System.Collections.Generic.Dictionary<string, object>
             {
                 { "ProcessId", processId }
             };
-            return new global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessSingle(source.Context, source.GetKeyPath(global::Microsoft.OData.Client.Serializer.GetKeyString(source.Context, keys)));
+            return new global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessSingle(source.Context, source.GetKeyPath(global::Microsoft.OData.Client.Serializer.GetKeyString(source.Context, keys)));
         }
         /// <summary>
-        /// Get an entity of type global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTask as global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTaskSingle specified by key from an entity set
+        /// Get an entity of type global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTask as global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskSingle specified by key from an entity set
         /// </summary>
         /// <param name="source">source entity set</param>
         /// <param name="keys">dictionary with the names and values of keys</param>
-        public static global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTaskSingle ByKey(this global::Microsoft.OData.Client.DataServiceQuery<global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTask> source, global::System.Collections.Generic.Dictionary<string, object> keys)
+        public static global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskSingle ByKey(this global::Microsoft.OData.Client.DataServiceQuery<global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTask> source, global::System.Collections.Generic.Dictionary<string, object> keys)
         {
-            return new global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTaskSingle(source.Context, source.GetKeyPath(global::Microsoft.OData.Client.Serializer.GetKeyString(source.Context, keys)));
+            return new global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskSingle(source.Context, source.GetKeyPath(global::Microsoft.OData.Client.Serializer.GetKeyString(source.Context, keys)));
         }
         /// <summary>
-        /// Get an entity of type global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTask as global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTaskSingle specified by key from an entity set
+        /// Get an entity of type global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTask as global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskSingle specified by key from an entity set
         /// </summary>
         /// <param name="source">source entity set</param>
         /// <param name="id">The value of id</param>
-        public static global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTaskSingle ByKey(this global::Microsoft.OData.Client.DataServiceQuery<global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTask> source,
+        public static global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskSingle ByKey(this global::Microsoft.OData.Client.DataServiceQuery<global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTask> source,
             global::System.Guid id)
         {
             global::System.Collections.Generic.Dictionary<string, object> keys = new global::System.Collections.Generic.Dictionary<string, object>
             {
                 { "Id", id }
             };
-            return new global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTaskSingle(source.Context, source.GetKeyPath(global::Microsoft.OData.Client.Serializer.GetKeyString(source.Context, keys)));
-        }
-    }
-}
-namespace Aspenlaub.Net.GitHub.CSharp.Tash
-{
-    /// <summary>
-    /// There are no comments for DefaultContainer in the schema.
-    /// </summary>
-    public partial class DefaultContainer : global::Microsoft.OData.Client.DataServiceContext
-    {
-        /// <summary>
-        /// Initialize a new DefaultContainer object.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public DefaultContainer(global::System.Uri serviceRoot) : 
-                base(serviceRoot, global::Microsoft.OData.Client.ODataProtocolVersion.V4)
-        {
-            this.OnContextCreated();
-            this.Format.LoadServiceModel = GeneratedEdmModel.GetInstance;
-            this.Format.UseJson();
-        }
-        partial void OnContextCreated();
-        /// <summary>
-        /// There are no comments for ControllableProcesses in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public global::Microsoft.OData.Client.DataServiceQuery<global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcess> ControllableProcesses
-        {
-            get
-            {
-                if ((this._ControllableProcesses == null))
-                {
-                    this._ControllableProcesses = base.CreateQuery<global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcess>("ControllableProcesses");
-                }
-                return this._ControllableProcesses;
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::Microsoft.OData.Client.DataServiceQuery<global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcess> _ControllableProcesses;
-        /// <summary>
-        /// There are no comments for ControllableProcessTasks in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public global::Microsoft.OData.Client.DataServiceQuery<global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTask> ControllableProcessTasks
-        {
-            get
-            {
-                if ((this._ControllableProcessTasks == null))
-                {
-                    this._ControllableProcessTasks = base.CreateQuery<global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTask>("ControllableProcessTasks");
-                }
-                return this._ControllableProcessTasks;
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::Microsoft.OData.Client.DataServiceQuery<global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTask> _ControllableProcessTasks;
-        /// <summary>
-        /// There are no comments for ControllableProcesses in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public void AddToControllableProcesses(global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcess controllableProcess)
-        {
-            base.AddObject("ControllableProcesses", controllableProcess);
-        }
-        /// <summary>
-        /// There are no comments for ControllableProcessTasks in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public void AddToControllableProcessTasks(global::Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTask controllableProcessTask)
-        {
-            base.AddObject("ControllableProcessTasks", controllableProcessTask);
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private abstract class GeneratedEdmModel
-        {
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-            private static global::Microsoft.OData.Edm.IEdmModel ParsedModel = LoadModelFromString();
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-            private const string Edmx = @"<edmx:Edmx Version=""4.0"" xmlns:edmx=""http://docs.oasis-open.org/odata/ns/edmx"">
-  <edmx:DataServices>
-    <Schema Namespace=""Aspenlaub.Net.GitHub.CSharp.Tash.Model"" xmlns=""http://docs.oasis-open.org/odata/ns/edm"">
-      <EntityType Name=""ControllableProcess"">
-        <Key>
-          <PropertyRef Name=""ProcessId"" />
-        </Key>
-        <Property Name=""ProcessId"" Type=""Edm.Int32"" Nullable=""false"" />
-        <Property Name=""Title"" Type=""Edm.String"" />
-        <Property Name=""LaunchCommand"" Type=""Edm.String"" />
-        <Property Name=""Status"" Type=""Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessStatus"" Nullable=""false"" />
-        <Property Name=""ConfirmedAt"" Type=""Edm.DateTimeOffset"" Nullable=""false"" />
-      </EntityType>
-      <EntityType Name=""ControllableProcessTask"">
-        <Key>
-          <PropertyRef Name=""Id"" />
-        </Key>
-        <Property Name=""Id"" Type=""Edm.Guid"" Nullable=""false"" />
-        <Property Name=""ProcessId"" Type=""Edm.Int32"" Nullable=""false"" />
-        <Property Name=""Type"" Type=""Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTaskType"" Nullable=""false"" />
-        <Property Name=""ControlName"" Type=""Edm.String"" />
-        <Property Name=""Text"" Type=""Edm.String"" />
-        <Property Name=""Status"" Type=""Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTaskStatus"" Nullable=""false"" />
-        <Property Name=""ErrorMessage"" Type=""Edm.String"" />
-      </EntityType>
-      <EnumType Name=""ControllableProcessStatus"">
-        <Member Name=""Idle"" Value=""0"" />
-        <Member Name=""Busy"" Value=""1"" />
-        <Member Name=""Dead"" Value=""2"" />
-        <Member Name=""DoesNotExist"" Value=""3"" />
-      </EnumType>
-      <EnumType Name=""ControllableProcessTaskType"">
-        <Member Name=""Reset"" Value=""0"" />
-        <Member Name=""SelectComboItem"" Value=""1"" />
-        <Member Name=""PressButton"" Value=""2"" />
-      </EnumType>
-      <EnumType Name=""ControllableProcessTaskStatus"">
-        <Member Name=""Requested"" Value=""0"" />
-        <Member Name=""Processing"" Value=""1"" />
-        <Member Name=""BadRequest"" Value=""2"" />
-        <Member Name=""Completed"" Value=""3"" />
-        <Member Name=""Failed"" Value=""4"" />
-      </EnumType>
-    </Schema>
-    <Schema Namespace=""Aspenlaub.Net.GitHub.CSharp.Tash"" xmlns=""http://docs.oasis-open.org/odata/ns/edm"">
-      <EntityContainer Name=""DefaultContainer"">
-        <EntitySet Name=""ControllableProcesses"" EntityType=""Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcess"" />
-        <EntitySet Name=""ControllableProcessTasks"" EntityType=""Aspenlaub.Net.GitHub.CSharp.Tash.Model.ControllableProcessTask"" />
-      </EntityContainer>
-    </Schema>
-  </edmx:DataServices>
-</edmx:Edmx>";
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-            public static global::Microsoft.OData.Edm.IEdmModel GetInstance()
-            {
-                return ParsedModel;
-            }
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-            private static global::Microsoft.OData.Edm.IEdmModel LoadModelFromString()
-            {
-                global::System.Xml.XmlReader reader = CreateXmlReader(Edmx);
-                try
-                {
-                    return global::Microsoft.OData.Edm.Csdl.CsdlReader.Parse(reader);
-                }
-                finally
-                {
-                    ((global::System.IDisposable)(reader)).Dispose();
-                }
-            }
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-            private static global::System.Xml.XmlReader CreateXmlReader(string edmxToParse)
-            {
-                return global::System.Xml.XmlReader.Create(new global::System.IO.StringReader(edmxToParse));
-            }
+            return new global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskSingle(source.Context, source.GetKeyPath(global::Microsoft.OData.Client.Serializer.GetKeyString(source.Context, keys)));
         }
     }
 }
