@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generation date: 2018-12-16 14:10:21
+// Generation date: 2018-12-29 14:43:57
 namespace Aspenlaub.Net.GitHub.CSharp.Tash
 {
     /// <summary>
@@ -119,6 +119,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
         <Member Name=""Reset"" Value=""0"" />
         <Member Name=""SelectComboItem"" Value=""1"" />
         <Member Name=""PressButton"" Value=""2"" />
+        <Member Name=""UpdateApplicationData"" Value=""3"" />
       </EnumType>
       <EnumType Name=""ControllableProcessTaskStatus"">
         <Member Name=""Requested"" Value=""0"" />
@@ -576,7 +577,8 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
     {
         Reset = 0,
         SelectComboItem = 1,
-        PressButton = 2
+        PressButton = 2,
+        UpdateApplicationData = 3
     }
     /// <summary>
     /// There are no comments for ControllableProcessTaskStatus in the schema.
