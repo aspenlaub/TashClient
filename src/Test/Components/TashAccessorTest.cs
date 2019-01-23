@@ -2,6 +2,10 @@ using System;
 using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
+using Aspenlaub.Net.GitHub.CSharp.Pegh.Components;
+using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
+using Aspenlaub.Net.GitHub.CSharp.Pegh.Extensions;
+using Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces;
 using Aspenlaub.Net.GitHub.CSharp.Tash;
 using Aspenlaub.Net.GitHub.CSharp.TashClient.Components;
 using Aspenlaub.Net.GitHub.CSharp.TashClient.Interfaces;
@@ -10,16 +14,24 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
     [TestClass]
     public class TashAccessorTest {
+        private readonly IComponentProvider vComponentProvider;
+
+        public TashAccessorTest() {
+            vComponentProvider = new ComponentProvider();
+        }
+
         [TestMethod]
         public async Task CanGetTashApp() {
-            ITashAccessor sut = new TashAccessor();
-            var tashApp = await sut.GetTashAppAsync();
+            ITashAccessor sut = new TashAccessor(vComponentProvider);
+            var errorsAndInfos = new ErrorsAndInfos();
+            var tashApp = await sut.GetTashAppAsync(errorsAndInfos);
+            Assert.IsFalse(errorsAndInfos.AnyErrors(), errorsAndInfos.ErrorsToString());
             Assert.IsNotNull(tashApp);
         }
 
         [TestMethod]
         public async Task CanLaunchTashAppIfNotRunning() {
-            ITashAccessor sut = new TashAccessor();
+            ITashAccessor sut = new TashAccessor(vComponentProvider);
             await LaunchTashAppIfNotRunning(sut);
         }
 
@@ -30,7 +42,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
 
         [TestMethod]
         public async Task CanGetControllableProcesses() {
-            ITashAccessor sut = new TashAccessor();
+            ITashAccessor sut = new TashAccessor(vComponentProvider);
             await LaunchTashAppIfNotRunning(sut);
 
             var processes = await sut.GetControllableProcessesAsync();
@@ -39,7 +51,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
 
         [TestMethod]
         public async Task CanPutAndGetControllableProcess() {
-            ITashAccessor sut = new TashAccessor();
+            ITashAccessor sut = new TashAccessor(vComponentProvider);
             await LaunchTashAppIfNotRunning(sut);
 
             var currentProcess = Process.GetCurrentProcess();
@@ -52,7 +64,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
 
         [TestMethod]
         public async Task CanConfirmAliveness() {
-            ITashAccessor sut = new TashAccessor();
+            ITashAccessor sut = new TashAccessor(vComponentProvider);
             await LaunchTashAppIfNotRunning(sut);
 
             var currentProcess = Process.GetCurrentProcess();
@@ -71,7 +83,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
 
         [TestMethod]
         public async Task CanGetControllableProcessTasks() {
-            ITashAccessor sut = new TashAccessor();
+            ITashAccessor sut = new TashAccessor(vComponentProvider);
             await LaunchTashAppIfNotRunning(sut);
 
             var processTasks = await sut.GetControllableProcessTasksAsync();
@@ -80,7 +92,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
 
         [TestMethod]
         public async Task CanPutAndGetControllableProcessTask() {
-            ITashAccessor sut = new TashAccessor();
+            ITashAccessor sut = new TashAccessor(vComponentProvider);
             await LaunchTashAppIfNotRunning(sut);
 
             var controllableProcessTask = CreateControllableProcessTask();
@@ -94,7 +106,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
 
         [TestMethod]
         public async Task CanConfirmStatus() {
-            ITashAccessor sut = new TashAccessor();
+            ITashAccessor sut = new TashAccessor(vComponentProvider);
             await LaunchTashAppIfNotRunning(sut);
 
             var controllableProcessTask = CreateControllableProcessTask();
@@ -122,7 +134,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
 
         [TestMethod]
         public async Task CanConfirmDeadAsync() {
-            ITashAccessor sut = new TashAccessor();
+            ITashAccessor sut = new TashAccessor(vComponentProvider);
             await LaunchTashAppIfNotRunning(sut);
 
             var currentProcess = Process.GetCurrentProcess();
@@ -140,7 +152,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
 
         [TestMethod]
         public async Task CanConfirmDeadWhileClosing() {
-            ITashAccessor sut = new TashAccessor();
+            ITashAccessor sut = new TashAccessor(vComponentProvider);
             await LaunchTashAppIfNotRunning(sut);
 
             var currentProcess = Process.GetCurrentProcess();
@@ -158,7 +170,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
 
         [TestMethod]
         public async Task CanGetOkayToMarkTaskAsCompleted() {
-            ITashAccessor sut = new TashAccessor();
+            ITashAccessor sut = new TashAccessor(vComponentProvider);
             await LaunchTashAppIfNotRunning(sut);
 
             var controllableProcessTask = CreateControllableProcessTask();
@@ -174,7 +186,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
 
         [TestMethod]
         public async Task CanPickRequestedTask() {
-            ITashAccessor sut = new TashAccessor();
+            ITashAccessor sut = new TashAccessor(vComponentProvider);
             await LaunchTashAppIfNotRunning(sut);
 
             var controllableProcessTask = CreateControllableProcessTask();
@@ -196,7 +208,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
 
         [TestMethod]
         public async Task CanAssumeDeath() {
-            ITashAccessor sut = new TashAccessor();
+            ITashAccessor sut = new TashAccessor(vComponentProvider);
             await LaunchTashAppIfNotRunning(sut);
 
             var currentProcess = Process.GetCurrentProcess();
@@ -212,7 +224,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
 
         [TestMethod]
         public async Task CanFindIdleProcess() {
-            ITashAccessor sut = new TashAccessor();
+            ITashAccessor sut = new TashAccessor(vComponentProvider);
             await LaunchTashAppIfNotRunning(sut);
 
             var currentProcess = Process.GetCurrentProcess();
@@ -226,7 +238,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
 
         [TestMethod]
         public async Task CanAwaitCompletionAsync() {
-            ITashAccessor sut = new TashAccessor();
+            ITashAccessor sut = new TashAccessor(vComponentProvider);
             await LaunchTashAppIfNotRunning(sut);
 
             var controllableProcessTask = CreateControllableProcessTask();

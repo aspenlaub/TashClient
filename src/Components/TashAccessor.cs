@@ -20,9 +20,15 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
     public class TashAccessor : ITashAccessor {
         private const string BaseUrl = "http://localhost:60404", TashAppId = "Tash";
 
-        public async Task<DvinApp> GetTashAppAsync() {
-            var repository = new DvinRepository();
-            return await repository.LoadAsync(TashAppId);
+        private readonly IComponentProvider vComponentProvider;
+
+        public TashAccessor(IComponentProvider componentProvider) {
+            vComponentProvider = componentProvider;
+        }
+
+        public async Task<DvinApp> GetTashAppAsync(IErrorsAndInfos errorsAndInfos) {
+            var repository = new DvinRepository(vComponentProvider);
+            return await repository.LoadAsync(TashAppId, errorsAndInfos);
         }
 
         public async Task<IErrorsAndInfos> EnsureTashAppIsRunningAsync() {
@@ -33,7 +39,11 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
             // ReSharper disable once EmptyGeneralCatchClause
             } catch {
             }
-            var tashApp = await GetTashAppAsync();
+            var tashApp = await GetTashAppAsync(errorsAndInfos);
+            if (errorsAndInfos.AnyErrors()) {
+                return errorsAndInfos;
+            }
+
             var fileSystemService = new FileSystemService();
             tashApp.Start(fileSystemService, errorsAndInfos);
             if (errorsAndInfos.AnyErrors()) {

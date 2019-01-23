@@ -9,7 +9,7 @@ using Aspenlaub.Net.GitHub.CSharp.Tash;
 
 namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Interfaces {
     public interface ITashAccessor {
-        Task<DvinApp> GetTashAppAsync();
+        Task<DvinApp> GetTashAppAsync(IErrorsAndInfos errorsAndInfos);
         Task<IErrorsAndInfos> EnsureTashAppIsRunningAsync();
 
         Task<IEnumerable<ControllableProcess>> GetControllableProcessesAsync();
