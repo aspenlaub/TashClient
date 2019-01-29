@@ -173,6 +173,10 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
         }
 
         public async Task<HttpStatusCode> ConfirmStatusAsync(Guid taskId, ControllableProcessTaskStatus status) {
+            return await ConfirmStatusAsync(taskId, status, null, null);
+        }
+
+        public async Task<HttpStatusCode> ConfirmStatusAsync(Guid taskId, ControllableProcessTaskStatus status, string text, string errorMessage) {
             var context = new DefaultContainer(new Uri(BaseUrl));
             if (!await ProcessTaskExists(context, taskId)) {
                 return HttpStatusCode.NotFound;
@@ -180,6 +184,8 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
 
             var controllableProcessTask = await context.ControllableProcessTasks.ByKey(taskId).GetValueAsync();
             controllableProcessTask.Status = status;
+            controllableProcessTask.Text = text;
+            controllableProcessTask.ErrorMessage = errorMessage;
             context.UpdateObject(controllableProcessTask);
             var response = await context.SaveChangesAsync(SaveChangesOptions.None);
             var statusCode = response.Select(r => (HttpStatusCode)r.StatusCode).FirstOrDefault();

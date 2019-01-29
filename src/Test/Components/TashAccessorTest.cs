@@ -121,6 +121,27 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
             Assert.AreEqual(ControllableProcessTaskStatus.BadRequest, processTask.Status);
         }
 
+        [TestMethod]
+        public async Task CanConfirmStatusWithTextAndErrorMessage() {
+            ITashAccessor sut = new TashAccessor(vComponentProvider);
+            await LaunchTashAppIfNotRunning(sut);
+
+            var controllableProcessTask = CreateControllableProcessTask();
+            var statusCode = await sut.PutControllableProcessTaskAsync(controllableProcessTask);
+            Assert.AreEqual(HttpStatusCode.Created, statusCode);
+
+            const string text = "This is not a text";
+            const string errorMessage = "This is not an error message";
+            statusCode = await sut.ConfirmStatusAsync(controllableProcessTask.Id, ControllableProcessTaskStatus.BadRequest, text, errorMessage);
+            Assert.AreEqual(HttpStatusCode.NoContent, statusCode);
+
+            var processTask = await sut.GetControllableProcessTaskAsync(controllableProcessTask.Id);
+            Assert.IsNotNull(processTask);
+            Assert.AreEqual(ControllableProcessTaskStatus.BadRequest, processTask.Status);
+            Assert.AreEqual(text, processTask.Text);
+            Assert.AreEqual(errorMessage, processTask.ErrorMessage);
+        }
+
         private ControllableProcessTask CreateControllableProcessTask() {
             return new ControllableProcessTask {
                 Id = Guid.NewGuid(),

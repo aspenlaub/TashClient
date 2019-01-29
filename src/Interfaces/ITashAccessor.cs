@@ -27,6 +27,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Interfaces {
         Task<ControllableProcessTask> GetControllableProcessTaskAsync(Guid taskId);
         Task<HttpStatusCode> PutControllableProcessTaskAsync(ControllableProcessTask processTask);
         Task<HttpStatusCode> ConfirmStatusAsync(Guid taskId, ControllableProcessTaskStatus status);
+        Task<HttpStatusCode> ConfirmStatusAsync(Guid taskId, ControllableProcessTaskStatus status, string text, string errorMessage);
         Task<ControllableProcessTask> AwaitCompletionAsync(Guid taskId, int milliSecondsToAttemptWhileRequestedOrProcessing);
     }
 }
