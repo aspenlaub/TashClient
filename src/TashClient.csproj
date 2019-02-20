@@ -19,8 +19,8 @@
     <None Remove="Test\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Aspenlaub.Net.GitHub.CSharp.Dvin" Version="1.0.6962.23494" />
-    <PackageReference Include="Microsoft.OData.Client" Version="7.5.3" />
+    <PackageReference Include="Aspenlaub.Net.GitHub.CSharp.Dvin" Version="1.0.6990.17469" />
+    <PackageReference Include="Microsoft.OData.Client" Version="7.5.4" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
