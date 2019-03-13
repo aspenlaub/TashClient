@@ -19,7 +19,7 @@
     <None Remove="Test\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Aspenlaub.Net.GitHub.CSharp.Dvin" Version="1.0.7006.32588" />
+    <PackageReference Include="Aspenlaub.Net.GitHub.CSharp.Dvin" Version="1.0.7011.17505" />
     <PackageReference Include="Microsoft.OData.Client" Version="7.5.4" />
   </ItemGroup>
   <ItemGroup>
