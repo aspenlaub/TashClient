@@ -1,7 +1,6 @@
 using Aspenlaub.Net.GitHub.CSharp.Dvin.Components;
 using Aspenlaub.Net.GitHub.CSharp.Dvin.Entities;
 using Aspenlaub.Net.GitHub.CSharp.Dvin.Extensions;
-using Aspenlaub.Net.GitHub.CSharp.Dvin.Repositories;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Entities;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Interfaces;
 using Aspenlaub.Net.GitHub.CSharp.Tash;
@@ -13,6 +12,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Aspenlaub.Net.GitHub.CSharp.Dvin.Interfaces;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Helpers;
 using Aspenlaub.Net.GitHub.CSharp.TashClient.Entities;
 
@@ -20,15 +20,14 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
     public class TashAccessor : ITashAccessor {
         private const string BaseUrl = "http://localhost:60404", TashAppId = "Tash";
 
-        private readonly IComponentProvider vComponentProvider;
+        protected readonly IDvinRepository DvinRepository;
 
-        public TashAccessor(IComponentProvider componentProvider) {
-            vComponentProvider = componentProvider;
+        public TashAccessor(IDvinRepository dvinRepository) {
+            DvinRepository = dvinRepository;
         }
 
         public async Task<DvinApp> GetTashAppAsync(IErrorsAndInfos errorsAndInfos) {
-            var repository = new DvinRepository(vComponentProvider);
-            return await repository.LoadAsync(TashAppId, errorsAndInfos);
+            return await DvinRepository.LoadAsync(TashAppId, errorsAndInfos);
         }
 
         public async Task<IErrorsAndInfos> EnsureTashAppIsRunningAsync() {
@@ -86,7 +85,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
                 controllableProcess.Title = process.ProcessName;
                 controllableProcess.Status = ControllableProcessStatus.Idle;
                 controllableProcess.ConfirmedAt = DateTimeOffset.Now;
-                controllableProcess.LaunchCommand = process.MainModule.FileName;
+                controllableProcess.LaunchCommand = process.MainModule?.FileName;
                 context.UpdateObject(controllableProcess);
             } else {
                 controllableProcess = new ControllableProcess {
@@ -94,7 +93,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
                     Title = process.ProcessName,
                     Status = ControllableProcessStatus.Idle,
                     ConfirmedAt = DateTimeOffset.Now,
-                    LaunchCommand = process.MainModule.FileName
+                    LaunchCommand = process.MainModule?.FileName
                 };
                 context.AddToControllableProcesses(controllableProcess);
             }
