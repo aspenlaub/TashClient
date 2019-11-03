@@ -149,7 +149,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
             return new ControllableProcessTask {
                 Id = Guid.NewGuid(),
                 ProcessId = new Random().Next(1, 32767),
-                Type = ControllableProcessTaskType.SelectComboItem,
+                Type = "SelectComboItem",
                 ControlName = "ScriptComboBox",
                 Status = ControllableProcessTaskStatus.Processing,
                 Text = "This is my selection"

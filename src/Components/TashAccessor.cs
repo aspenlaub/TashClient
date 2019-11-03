@@ -203,7 +203,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
             return controllableProcessTasks.Any();
         }
 
-        public bool MarkTaskAsCompleted(ControllableProcessTask theTaskIAmProcessing, int processId, ControllableProcessTaskType type, string controlName, string text) {
+        public bool MarkTaskAsCompleted(ControllableProcessTask theTaskIAmProcessing, int processId, string type, string controlName, string text) {
             return theTaskIAmProcessing != null
                    && theTaskIAmProcessing.Status == ControllableProcessTaskStatus.Processing
                    && theTaskIAmProcessing.ProcessId == processId

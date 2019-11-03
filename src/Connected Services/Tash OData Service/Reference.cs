@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generation date: 2018-12-29 14:43:57
+// Generation date: 03.11.2019 15:48:35
 namespace Aspenlaub.Net.GitHub.CSharp.Tash
 {
     /// <summary>
@@ -19,19 +19,30 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
         /// <summary>
         /// Initialize a new DefaultContainer object.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         public DefaultContainer(global::System.Uri serviceRoot) : 
                 base(serviceRoot, global::Microsoft.OData.Client.ODataProtocolVersion.V4)
         {
+            this.ResolveName = new global::System.Func<global::System.Type, string>(this.ResolveNameFromType);
             this.OnContextCreated();
             this.Format.LoadServiceModel = GeneratedEdmModel.GetInstance;
             this.Format.UseJson();
         }
         partial void OnContextCreated();
         /// <summary>
+        /// Since the namespace configured for this service reference
+        /// in Visual Studio is different from the one indicated in the
+        /// server schema, use type-mappers to map between the two.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
+        protected string ResolveNameFromType(global::System.Type clientType)
+        {
+            return clientType.FullName;
+        }
+        /// <summary>
         /// There are no comments for ControllableProcesses in the schema.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         public global::Microsoft.OData.Client.DataServiceQuery<ControllableProcess> ControllableProcesses
         {
             get
@@ -43,12 +54,12 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
                 return this._ControllableProcesses;
             }
         }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         private global::Microsoft.OData.Client.DataServiceQuery<ControllableProcess> _ControllableProcesses;
         /// <summary>
         /// There are no comments for ControllableProcessTasks in the schema.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         public global::Microsoft.OData.Client.DataServiceQuery<ControllableProcessTask> ControllableProcessTasks
         {
             get
@@ -60,12 +71,12 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
                 return this._ControllableProcessTasks;
             }
         }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         private global::Microsoft.OData.Client.DataServiceQuery<ControllableProcessTask> _ControllableProcessTasks;
         /// <summary>
         /// There are no comments for ControllableProcesses in the schema.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         public void AddToControllableProcesses(ControllableProcess controllableProcess)
         {
             base.AddObject("ControllableProcesses", controllableProcess);
@@ -73,17 +84,17 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
         /// <summary>
         /// There are no comments for ControllableProcessTasks in the schema.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         public void AddToControllableProcessTasks(ControllableProcessTask controllableProcessTask)
         {
             base.AddObject("ControllableProcessTasks", controllableProcessTask);
         }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         private abstract class GeneratedEdmModel
         {
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
             private static global::Microsoft.OData.Edm.IEdmModel ParsedModel = LoadModelFromString();
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
             private const string Edmx = @"<edmx:Edmx Version=""4.0"" xmlns:edmx=""http://docs.oasis-open.org/odata/ns/edmx"">
   <edmx:DataServices>
     <Schema Namespace=""Aspenlaub.Net.GitHub.CSharp.Tash"" xmlns=""http://docs.oasis-open.org/odata/ns/edm"">
@@ -103,7 +114,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
         </Key>
         <Property Name=""Id"" Type=""Edm.Guid"" Nullable=""false"" />
         <Property Name=""ProcessId"" Type=""Edm.Int32"" Nullable=""false"" />
-        <Property Name=""Type"" Type=""Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskType"" Nullable=""false"" />
+        <Property Name=""Type"" Type=""Edm.String"" />
         <Property Name=""ControlName"" Type=""Edm.String"" />
         <Property Name=""Text"" Type=""Edm.String"" />
         <Property Name=""Status"" Type=""Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskStatus"" Nullable=""false"" />
@@ -114,12 +125,6 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
         <Member Name=""Busy"" Value=""1"" />
         <Member Name=""Dead"" Value=""2"" />
         <Member Name=""DoesNotExist"" Value=""3"" />
-      </EnumType>
-      <EnumType Name=""ControllableProcessTaskType"">
-        <Member Name=""Reset"" Value=""0"" />
-        <Member Name=""SelectComboItem"" Value=""1"" />
-        <Member Name=""PressButton"" Value=""2"" />
-        <Member Name=""UpdateApplicationData"" Value=""3"" />
       </EnumType>
       <EnumType Name=""ControllableProcessTaskStatus"">
         <Member Name=""Requested"" Value=""0"" />
@@ -135,25 +140,39 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
     </Schema>
   </edmx:DataServices>
 </edmx:Edmx>";
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
             public static global::Microsoft.OData.Edm.IEdmModel GetInstance()
             {
                 return ParsedModel;
             }
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
             private static global::Microsoft.OData.Edm.IEdmModel LoadModelFromString()
             {
                 global::System.Xml.XmlReader reader = CreateXmlReader(Edmx);
                 try
                 {
-                    return global::Microsoft.OData.Edm.Csdl.CsdlReader.Parse(reader);
+                    global::System.Collections.Generic.IEnumerable<global::Microsoft.OData.Edm.Validation.EdmError> errors;
+                    global::Microsoft.OData.Edm.IEdmModel edmModel;
+                    
+                    if (!global::Microsoft.OData.Edm.Csdl.CsdlReader.TryParse(reader, false, out edmModel, out errors))
+                    {
+                        global::System.Text.StringBuilder errorMessages = new System.Text.StringBuilder();
+                        foreach (var error in errors)
+                        {
+                            errorMessages.Append(error.ErrorMessage);
+                            errorMessages.Append("; ");
+                        }
+                        throw new global::System.InvalidOperationException(errorMessages.ToString());
+                    }
+
+                    return edmModel;
                 }
                 finally
                 {
                     ((global::System.IDisposable)(reader)).Dispose();
                 }
             }
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
             private static global::System.Xml.XmlReader CreateXmlReader(string edmxToParse)
             {
                 return global::System.Xml.XmlReader.Create(new global::System.IO.StringReader(edmxToParse));
@@ -200,7 +219,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
         /// <param name="processId">Initial value of ProcessId.</param>
         /// <param name="status">Initial value of Status.</param>
         /// <param name="confirmedAt">Initial value of ConfirmedAt.</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         public static ControllableProcess CreateControllableProcess(int processId, global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessStatus status, global::System.DateTimeOffset confirmedAt)
         {
             ControllableProcess controllableProcess = new ControllableProcess();
@@ -212,7 +231,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
         /// <summary>
         /// There are no comments for Property ProcessId in the schema.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         public int ProcessId
         {
             get
@@ -227,14 +246,14 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
                 this.OnPropertyChanged("ProcessId");
             }
         }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         private int _ProcessId;
         partial void OnProcessIdChanging(int value);
         partial void OnProcessIdChanged();
         /// <summary>
         /// There are no comments for Property Title in the schema.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         public string Title
         {
             get
@@ -249,14 +268,14 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
                 this.OnPropertyChanged("Title");
             }
         }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         private string _Title;
         partial void OnTitleChanging(string value);
         partial void OnTitleChanged();
         /// <summary>
         /// There are no comments for Property LaunchCommand in the schema.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         public string LaunchCommand
         {
             get
@@ -271,14 +290,14 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
                 this.OnPropertyChanged("LaunchCommand");
             }
         }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         private string _LaunchCommand;
         partial void OnLaunchCommandChanging(string value);
         partial void OnLaunchCommandChanged();
         /// <summary>
         /// There are no comments for Property Status in the schema.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         public global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessStatus Status
         {
             get
@@ -293,14 +312,14 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
                 this.OnPropertyChanged("Status");
             }
         }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         private global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessStatus _Status;
         partial void OnStatusChanging(global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessStatus value);
         partial void OnStatusChanged();
         /// <summary>
         /// There are no comments for Property ConfirmedAt in the schema.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         public global::System.DateTimeOffset ConfirmedAt
         {
             get
@@ -315,20 +334,20 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
                 this.OnPropertyChanged("ConfirmedAt");
             }
         }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         private global::System.DateTimeOffset _ConfirmedAt;
         partial void OnConfirmedAtChanging(global::System.DateTimeOffset value);
         partial void OnConfirmedAtChanged();
         /// <summary>
         /// This event is raised when the value of the property is changed
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         /// <summary>
         /// The value of the property is changed
         /// </summary>
         /// <param name="property">property name</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         protected virtual void OnPropertyChanged(string property)
         {
             if ((this.PropertyChanged != null))
@@ -376,22 +395,20 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
         /// </summary>
         /// <param name="ID">Initial value of Id.</param>
         /// <param name="processId">Initial value of ProcessId.</param>
-        /// <param name="type">Initial value of Type.</param>
         /// <param name="status">Initial value of Status.</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public static ControllableProcessTask CreateControllableProcessTask(global::System.Guid ID, int processId, global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskType type, global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskStatus status)
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
+        public static ControllableProcessTask CreateControllableProcessTask(global::System.Guid ID, int processId, global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskStatus status)
         {
             ControllableProcessTask controllableProcessTask = new ControllableProcessTask();
             controllableProcessTask.Id = ID;
             controllableProcessTask.ProcessId = processId;
-            controllableProcessTask.Type = type;
             controllableProcessTask.Status = status;
             return controllableProcessTask;
         }
         /// <summary>
         /// There are no comments for Property Id in the schema.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         public global::System.Guid Id
         {
             get
@@ -406,14 +423,14 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
                 this.OnPropertyChanged("Id");
             }
         }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         private global::System.Guid _Id;
         partial void OnIdChanging(global::System.Guid value);
         partial void OnIdChanged();
         /// <summary>
         /// There are no comments for Property ProcessId in the schema.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         public int ProcessId
         {
             get
@@ -428,15 +445,15 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
                 this.OnPropertyChanged("ProcessId");
             }
         }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         private int _ProcessId;
         partial void OnProcessIdChanging(int value);
         partial void OnProcessIdChanged();
         /// <summary>
         /// There are no comments for Property Type in the schema.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        public global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskType Type
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
+        public string Type
         {
             get
             {
@@ -450,14 +467,14 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
                 this.OnPropertyChanged("Type");
             }
         }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
-        private global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskType _Type;
-        partial void OnTypeChanging(global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskType value);
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
+        private string _Type;
+        partial void OnTypeChanging(string value);
         partial void OnTypeChanged();
         /// <summary>
         /// There are no comments for Property ControlName in the schema.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         public string ControlName
         {
             get
@@ -472,14 +489,14 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
                 this.OnPropertyChanged("ControlName");
             }
         }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         private string _ControlName;
         partial void OnControlNameChanging(string value);
         partial void OnControlNameChanged();
         /// <summary>
         /// There are no comments for Property Text in the schema.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         public string Text
         {
             get
@@ -494,14 +511,14 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
                 this.OnPropertyChanged("Text");
             }
         }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         private string _Text;
         partial void OnTextChanging(string value);
         partial void OnTextChanged();
         /// <summary>
         /// There are no comments for Property Status in the schema.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         public global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskStatus Status
         {
             get
@@ -516,14 +533,14 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
                 this.OnPropertyChanged("Status");
             }
         }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         private global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskStatus _Status;
         partial void OnStatusChanging(global::Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskStatus value);
         partial void OnStatusChanged();
         /// <summary>
         /// There are no comments for Property ErrorMessage in the schema.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         public string ErrorMessage
         {
             get
@@ -538,20 +555,20 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
                 this.OnPropertyChanged("ErrorMessage");
             }
         }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         private string _ErrorMessage;
         partial void OnErrorMessageChanging(string value);
         partial void OnErrorMessageChanged();
         /// <summary>
         /// This event is raised when the value of the property is changed
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         /// <summary>
         /// The value of the property is changed
         /// </summary>
         /// <param name="property">property name</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.4.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "2.6.0")]
         protected virtual void OnPropertyChanged(string property)
         {
             if ((this.PropertyChanged != null))
@@ -569,16 +586,6 @@ namespace Aspenlaub.Net.GitHub.CSharp.Tash
         Busy = 1,
         Dead = 2,
         DoesNotExist = 3
-    }
-    /// <summary>
-    /// There are no comments for ControllableProcessTaskType in the schema.
-    /// </summary>
-    public enum ControllableProcessTaskType
-    {
-        Reset = 0,
-        SelectComboItem = 1,
-        PressButton = 2,
-        UpdateApplicationData = 3
     }
     /// <summary>
     /// There are no comments for ControllableProcessTaskStatus in the schema.

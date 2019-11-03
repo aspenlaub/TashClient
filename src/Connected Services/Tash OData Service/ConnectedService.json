@@ -1,14 +1,20 @@
 ﻿{
-  "ProviderId": "Microsoft.OData.ConnectedService",
-  "Version": "0.2.0",
+  "ProviderId": "Unchase.OData.ConnectedService",
+  "Version": "1.3.4.0",
   "GettingStartedDocument": {
     "Uri": "http://odata.github.io/odata.net/"
   },
   "ExtendedData": {
     "EnableNamingAlias": false,
     "IgnoreUnexpectedElementsAndAttributes": false,
+    "GenerateDynamicPropertiesCollection": true,
+    "DynamicPropertiesCollectionName": "DynamicProperties",
     "IncludeT4File": false,
+    "OperationImportsGenerator": 0,
+    "IncludeExtensionsT4File": false,
+    "GenerateOperationImports": false,
     "ServiceName": "Tash OData Service",
+    "AcceptAllUntrustedCertificates": false,
     "Endpoint": "http://localhost:60404/$metadata",
     "EdmxVersion": {
       "Major": 4,
@@ -21,6 +27,21 @@
     "GeneratedFileNamePrefix": "Reference",
     "UseNameSpacePrefix": false,
     "NamespacePrefix": null,
-    "UseDataServiceCollection": true
+    "UseDataServiceCollection": true,
+    "OpenGeneratedFilesOnComplete": false,
+    "LanguageOption": 0,
+    "FunctionImports": null,
+    "OperationImports": null,
+    "ExcludedOperationImportsNames": "",
+    "UseNetworkCredentials": false,
+    "NetworkCredentialsUserName": null,
+    "NetworkCredentialsPassword": null,
+    "NetworkCredentialsDomain": null,
+    "WebProxyUri": null,
+    "UseWebProxy": false,
+    "UseWebProxyCredentials": false,
+    "WebProxyNetworkCredentialsUserName": null,
+    "WebProxyNetworkCredentialsPassword": null,
+    "WebProxyNetworkCredentialsDomain": null
   }
 }
