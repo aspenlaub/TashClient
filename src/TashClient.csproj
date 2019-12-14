@@ -15,6 +15,7 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/aspenlaub/TashClient.git</RepositoryUrl>
     <RepositoryBranch>master</RepositoryBranch>
+    <PackageId>TashClient</PackageId>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
