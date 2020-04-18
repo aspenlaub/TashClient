@@ -69,7 +69,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
 
         public async Task<ControllableProcess> GetControllableProcessAsync(int processId) {
             var context = new DefaultContainer(new Uri(BaseUrl));
-            if (!await ProcessExists(context, processId)) {
+            if (!(await ProcessExists(context, processId)).YesNo) {
                 return null;
             }
 
@@ -80,7 +80,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
         public async Task<HttpStatusCode> PutControllableProcessAsync(Process process) {
             var context = new DefaultContainer(new Uri(BaseUrl));
             ControllableProcess controllableProcess;
-            if (await ProcessExists(context, process.Id)) {
+            if ((await ProcessExists(context, process.Id)).YesNo) {
                 controllableProcess = await context.ControllableProcesses.ByKey(process.Id).GetValueAsync();
                 controllableProcess.Title = process.ProcessName;
                 controllableProcess.Status = ControllableProcessStatus.Idle;
@@ -105,7 +105,11 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
 
         public async Task<HttpStatusCode> ConfirmAliveAsync(int processId, DateTime now, ControllableProcessStatus status) {
             var context = new DefaultContainer(new Uri(BaseUrl));
-            if (!await ProcessExists(context, processId)) {
+            var processExists = await ProcessExists(context, processId);
+            if (processExists.Inconclusive) {
+                return HttpStatusCode.InternalServerError;
+            }
+            if (!processExists.YesNo) {
                 return HttpStatusCode.NotFound;
             }
 
@@ -191,10 +195,15 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
             return statusCode;
         }
 
-        private async Task<bool> ProcessExists(DefaultContainer context, int processId) {
+        private async Task<YesNoInconclusive> ProcessExists(DefaultContainer context, int processId) {
             var query = (DataServiceQuery<ControllableProcess>)context.ControllableProcesses.Where(p => p.ProcessId == processId || p.ProcessId == -4711); // Hack, hack, hack
-            var controllableProcesses = await query.ExecuteAsync();
-            return controllableProcesses.Any();
+            try {
+                var controllableProcesses = await query.ExecuteAsync();
+                return controllableProcesses.Any() ? new YesNoInconclusive {YesNo = true} : new YesNoInconclusive {YesNo = false};
+            }
+            catch {
+                return new YesNoInconclusive {Inconclusive = true, YesNo = false};
+            }
         }
 
         private async Task<bool> ProcessTaskExists(DefaultContainer context, Guid taskId) {
