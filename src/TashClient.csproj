@@ -36,10 +36,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Dvin" Version="2.0.479.907" />
-    <PackageReference Include="Microsoft.OData.Client" Version="7.7.3" />
-    <PackageReference Include="Microsoft.OData.Core" Version="7.7.3" />
-    <PackageReference Include="Microsoft.OData.Edm" Version="7.7.3" />
-    <PackageReference Include="Microsoft.Spatial" Version="7.7.3" />
+    <PackageReference Include="Microsoft.OData.Client" Version="7.8.1" />
+    <PackageReference Include="Microsoft.OData.Core" Version="7.8.1" />
+    <PackageReference Include="Microsoft.OData.Edm" Version="7.8.1" />
+    <PackageReference Include="Microsoft.Spatial" Version="7.8.1" />
     <PackageReference Include="System.Text.Json" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
