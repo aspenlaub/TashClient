@@ -186,6 +186,10 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
             }
 
             var controllableProcessTask = await context.ControllableProcessTasks.ByKey(taskId).GetValueAsync();
+            if (controllableProcessTask == null) {
+                return HttpStatusCode.NotFound;
+            }
+
             controllableProcessTask.Status = status;
             controllableProcessTask.Text = text;
             controllableProcessTask.ErrorMessage = errorMessage;
@@ -262,17 +266,19 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
                 }, TimeSpan.FromMilliseconds(internalInMilliSeconds));
 
                 task = await GetControllableProcessTaskAsync(taskId);
-                if (task.Status == ControllableProcessTaskStatus.Completed) {
-                    return task;
-                }
+                if (task != null) {
+                    if (task.Status == ControllableProcessTaskStatus.Completed) {
+                        return task;
+                    }
 
-                var process = await GetControllableProcessAsync(task.ProcessId);
-                if (process?.Status == ControllableProcessStatus.Dead) {
-                    return task;
+                    var process = await GetControllableProcessAsync(task.ProcessId);
+                    if (process?.Status == ControllableProcessStatus.Dead) {
+                        return task;
+                    }
                 }
 
                 milliSecondsToAttemptWhileRequestedOrProcessing -= internalInMilliSeconds;
-            } while (0 < milliSecondsToAttemptWhileRequestedOrProcessing && (task.Status == ControllableProcessTaskStatus.Processing || task.Status == ControllableProcessTaskStatus.Requested));
+            } while (0 < milliSecondsToAttemptWhileRequestedOrProcessing && (task?.Status == ControllableProcessTaskStatus.Processing || task?.Status == ControllableProcessTaskStatus.Requested));
 
             return task;
         }
