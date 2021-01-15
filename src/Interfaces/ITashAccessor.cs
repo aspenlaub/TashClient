@@ -12,7 +12,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Interfaces {
         Task<DvinApp> GetTashAppAsync(IErrorsAndInfos errorsAndInfos);
         Task<IErrorsAndInfos> EnsureTashAppIsRunningAsync();
 
-        Task<IEnumerable<ControllableProcess>> GetControllableProcessesAsync();
+        Task<IList<ControllableProcess>> GetControllableProcessesAsync();
         Task<ControllableProcess> GetControllableProcessAsync(int processId);
         Task<HttpStatusCode> PutControllableProcessAsync(Process process);
         Task<HttpStatusCode> ConfirmAliveAsync(int processId, DateTime now, ControllableProcessStatus status);
@@ -23,7 +23,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Interfaces {
         Task AssumeDeath(Func<ControllableProcess, bool> condition);
         Task<IFindIdleProcessResult> FindIdleProcess(Func<ControllableProcess, bool> condition);
 
-        Task<IEnumerable<ControllableProcessTask>> GetControllableProcessTasksAsync();
+        Task<IList<ControllableProcessTask>> GetControllableProcessTasksAsync();
         Task<ControllableProcessTask> GetControllableProcessTaskAsync(Guid taskId);
         Task<HttpStatusCode> PutControllableProcessTaskAsync(ControllableProcessTask processTask);
         Task<HttpStatusCode> ConfirmStatusAsync(Guid taskId, ControllableProcessTaskStatus status);

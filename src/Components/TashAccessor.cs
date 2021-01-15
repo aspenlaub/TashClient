@@ -86,12 +86,13 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
             }
         }
 
-        public async Task<IEnumerable<ControllableProcess>> GetControllableProcessesAsync() {
+        public async Task<IList<ControllableProcess>> GetControllableProcessesAsync() {
             using (vSimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), vLogId))) {
                 vSimpleLogger.LogInformation("Get controllable processes");
                 var context = new DefaultContainer(new Uri(BaseUrl));
                 var processes = await context.ControllableProcesses.ExecuteAsync();
-                return processes;
+                var processList = processes.ToList();
+                return processList;
             }
         }
 
@@ -179,12 +180,13 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
             task.Wait();
         }
 
-        public async Task<IEnumerable<ControllableProcessTask>> GetControllableProcessTasksAsync() {
+        public async Task<IList<ControllableProcessTask>> GetControllableProcessTasksAsync() {
             using (vSimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), vLogId))) {
                 vSimpleLogger.LogInformation("Get controllable process tasks");
                 var context = new DefaultContainer(new Uri(BaseUrl));
                 var processTasks = await context.ControllableProcessTasks.ExecuteAsync();
-                return processTasks;
+                var processList = processTasks.ToList();
+                return processList;
             }
         }
 
