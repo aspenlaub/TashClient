@@ -257,8 +257,10 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
                         return HttpStatusCode.NotFound;
                     }
                     try {
+                        vSimpleLogger.LogInformation($"Select task with id={taskId} for update");
                         controllableProcessTask = await context.ControllableProcessTasks.ByKey(taskId).GetValueAsync();
                     } catch {
+                        vSimpleLogger.LogError($"Could not select task with id={taskId} for update, trying again");
                         wasExceptionThrown = true;
                     }
                 } while (wasExceptionThrown);
