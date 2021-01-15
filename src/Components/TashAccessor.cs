@@ -246,12 +246,23 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
         public async Task<HttpStatusCode> ConfirmStatusAsync(Guid taskId, ControllableProcessTaskStatus status, string text, string errorMessage) {
             using (vSimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), vLogId))) {
                 vSimpleLogger.LogInformation($"Confirm status {Enum.GetName(typeof(ControllableProcessStatus), status)} for task id={taskId}");
-                var context = new DefaultContainer(new Uri(BaseUrl));
-                if (!await ProcessTaskExists(context, taskId)) {
-                    return HttpStatusCode.NotFound;
-                }
 
-                var controllableProcessTask = await context.ControllableProcessTasks.ByKey(taskId).GetValueAsync();
+                DefaultContainer context;
+                ControllableProcessTask controllableProcessTask = null;
+                bool wasExceptionThrown;
+                do {
+                    wasExceptionThrown = false;
+                    context = new DefaultContainer(new Uri(BaseUrl));
+                    if (!await ProcessTaskExists(context, taskId)) {
+                        return HttpStatusCode.NotFound;
+                    }
+                    try {
+                        controllableProcessTask = await context.ControllableProcessTasks.ByKey(taskId).GetValueAsync();
+                    } catch {
+                        wasExceptionThrown = true;
+                    }
+                } while (wasExceptionThrown);
+
                 if (controllableProcessTask == null) {
                     vSimpleLogger.LogInformation($"No task found with id={taskId}");
                     return HttpStatusCode.NotFound;
@@ -263,7 +274,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
                 controllableProcessTask.ErrorMessage = errorMessage;
                 context.UpdateObject(controllableProcessTask);
                 var response = await context.SaveChangesAsync(SaveChangesOptions.None);
-                var statusCode = response.Select(r => (HttpStatusCode) r.StatusCode).FirstOrDefault();
+                var statusCode = response.Select(r => (HttpStatusCode)r.StatusCode).FirstOrDefault();
                 return statusCode;
             }
         }
@@ -353,7 +364,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
                     }
 
                     milliSecondsToAttemptWhileRequestedOrProcessing -= internalInMilliSeconds;
-                } while (0 < milliSecondsToAttemptWhileRequestedOrProcessing && (task?.Status == ControllableProcessTaskStatus.Processing || task?.Status == ControllableProcessTaskStatus.Requested));
+                } while (0 < milliSecondsToAttemptWhileRequestedOrProcessing && (task == null || task.Status == ControllableProcessTaskStatus.Processing || task.Status == ControllableProcessTaskStatus.Requested));
 
                 vSimpleLogger.LogInformation($"Returning incomplete task with id={taskId}");
                 return task;
