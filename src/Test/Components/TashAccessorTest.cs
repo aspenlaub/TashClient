@@ -31,6 +31,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
             var logConfigurationMock = new Mock<ILogConfiguration>();
             logConfigurationMock.SetupGet(lc => lc.LogSubFolder).Returns(@"AspenlaubLogs\" + nameof(TashAccessorTest));
             logConfigurationMock.SetupGet(lc => lc.LogId).Returns($"{DateTime.Today:yyyy-MM-dd}-{Process.GetCurrentProcess().Id}");
+            logConfigurationMock.SetupGet(lc => lc.DetailedLogging).Returns(true);
             vLogConfiguration = logConfigurationMock.Object;
         }
 

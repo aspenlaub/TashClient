@@ -2,5 +2,6 @@
     public interface ILogConfiguration {
         string LogSubFolder { get; }
         string LogId { get; }
+        bool DetailedLogging { get; }
     }
 }

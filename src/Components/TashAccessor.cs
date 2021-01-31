@@ -25,12 +25,14 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
         protected readonly IDvinRepository DvinRepository;
         private readonly ISimpleLogger vSimpleLogger;
         private readonly string vLogId;
+        private readonly bool vDetailedLogging;
 
         public TashAccessor(IDvinRepository dvinRepository, ISimpleLogger simpleLogger, ILogConfiguration logConfiguration) {
             DvinRepository = dvinRepository;
             vSimpleLogger = simpleLogger;
             vSimpleLogger.LogSubFolder = logConfiguration.LogSubFolder;
             vLogId = logConfiguration.LogId;
+            vDetailedLogging = logConfiguration.DetailedLogging;
         }
 
         public async Task<DvinApp> GetTashAppAsync(IErrorsAndInfos errorsAndInfos) {
@@ -192,14 +194,18 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
 
         public async Task<ControllableProcessTask> GetControllableProcessTaskAsync(Guid taskId) {
             using (vSimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), vLogId))) {
-                vSimpleLogger.LogInformation($"Get controllable process task with id={taskId}");
+                if (vDetailedLogging) {
+                    vSimpleLogger.LogInformation($"Get controllable process task with id={taskId}");
+                }
                 var context = new DefaultContainer(new Uri(BaseUrl));
                 if (!await ProcessTaskExists(context, taskId)) {
                     vSimpleLogger.LogInformation($"No controllable process task found with id={taskId}");
                     return null;
                 }
 
-                vSimpleLogger.LogInformation($"Returning controllable process task with id={taskId}");
+                if (vDetailedLogging) {
+                    vSimpleLogger.LogInformation($"Returning controllable process task with id={taskId}");
+                }
                 var processTask = await context.ControllableProcessTasks.ByKey(taskId).GetValueAsync();
                 return processTask;
             }
