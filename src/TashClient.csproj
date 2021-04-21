@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>Aspenlaub.Net.GitHub.CSharp.TashClient</AssemblyName>
     <RootNamespace>Aspenlaub.Net.GitHub.CSharp.TashClient</RootNamespace>
     <GenerateBuildInfoConfigFile>false</GenerateBuildInfoConfigFile>
@@ -36,7 +36,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Dvin" Version="2.0.610.1061" />
+    <PackageReference Include="Dvin" Version="2.0.637.907" />
     <PackageReference Include="Microsoft.OData.Client" Version="7.8.3" />
     <PackageReference Include="Microsoft.OData.Core" Version="7.8.3" />
     <PackageReference Include="Microsoft.OData.Edm" Version="7.8.3" />
