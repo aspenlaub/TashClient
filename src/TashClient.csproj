@@ -36,7 +36,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Dvin" Version="2.0.658.618" />
+    <PackageReference Include="Dvin" Version="2.0.673.1230" />
     <PackageReference Include="Microsoft.OData.Client" Version="7.9.0" />
     <PackageReference Include="Microsoft.OData.Core" Version="7.9.0" />
     <PackageReference Include="Microsoft.OData.Edm" Version="7.9.0" />
