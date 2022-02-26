@@ -190,7 +190,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components {
             Assert.IsTrue(statusCode == HttpStatusCode.Created || statusCode == HttpStatusCode.NoContent);
 
             var now = DateTime.Now;
-            vSut.ConfirmDeadWhileClosing(currentProcess.Id);
+            await vSut.ConfirmDeadWhileClosingAsync(currentProcess.Id);
 
             var process = await vSut.GetControllableProcessAsync(currentProcess.Id);
             Assert.IsNotNull(process);

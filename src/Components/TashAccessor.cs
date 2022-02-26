@@ -177,9 +177,8 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components {
             }
         }
 
-        public void ConfirmDeadWhileClosing(int processId) {
-            var task = Task.Run(async () => { await ConfirmDeadAsync(processId); });
-            task.Wait();
+        public async Task ConfirmDeadWhileClosingAsync(int processId) {
+            await ConfirmDeadAsync(processId);
         }
 
         public async Task<IList<ControllableProcessTask>> GetControllableProcessTasksAsync() {
