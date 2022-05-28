@@ -31,7 +31,8 @@ public class TashAccessor : ITashAccessor {
     public TashAccessor(IDvinRepository dvinRepository, ISimpleLogger simpleLogger, ILogConfigurationFactory logConfigurationFactory) {
         DvinRepository = dvinRepository;
         SimpleLogger = simpleLogger;
-        var logConfiguration = logConfigurationFactory.Create("TashClient", true);
+        logConfigurationFactory.InitializeIfNecessary("TashClient", true);
+        var logConfiguration = logConfigurationFactory.Create();
         SimpleLogger.LogSubFolder = logConfiguration.LogSubFolder;
         LogId = logConfiguration.LogId;
         DetailedLogging = logConfiguration.DetailedLogging;

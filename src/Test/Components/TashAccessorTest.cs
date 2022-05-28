@@ -33,7 +33,7 @@ public class TashAccessorTest {
         logConfigurationMock.SetupGet(lc => lc.LogId).Returns($"{DateTime.Today:yyyy-MM-dd}-{Process.GetCurrentProcess().Id}");
         logConfigurationMock.SetupGet(lc => lc.DetailedLogging).Returns(true);
         var logConfigurationFactoryMock = new Mock<ILogConfigurationFactory>();
-        logConfigurationFactoryMock.Setup(f => f.Create(It.IsAny<string>(), It.IsAny<bool>())).Returns(logConfigurationMock.Object);
+        logConfigurationFactoryMock.Setup(f => f.Create()).Returns(logConfigurationMock.Object);
         LogConfigurationFactory = logConfigurationFactoryMock.Object;
     }
 
