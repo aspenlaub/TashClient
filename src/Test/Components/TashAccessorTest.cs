@@ -12,7 +12,6 @@ using Aspenlaub.Net.GitHub.CSharp.Tash;
 using Aspenlaub.Net.GitHub.CSharp.TashClient.Components;
 using Autofac;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components;
 
@@ -24,17 +23,11 @@ public class TashAccessorTest {
     private TashAccessor Sut;
 
     public TashAccessorTest() {
-        var builder = new ContainerBuilder().UseDvinAndPegh(new DummyCsArgumentPrompter());
+        var builder = new ContainerBuilder().UseDvinAndPegh("TashClient", new DummyCsArgumentPrompter());
         var container = builder.Build();
         DvinRepository = container.Resolve<IDvinRepository>();
         SimpleLogger = container.Resolve<ISimpleLogger>();
-        var logConfigurationMock = new Mock<ILogConfiguration>();
-        logConfigurationMock.SetupGet(lc => lc.LogSubFolder).Returns(@"AspenlaubLogs\" + nameof(TashAccessorTest));
-        logConfigurationMock.SetupGet(lc => lc.LogId).Returns($"{DateTime.Today:yyyy-MM-dd}-{Process.GetCurrentProcess().Id}");
-        logConfigurationMock.SetupGet(lc => lc.DetailedLogging).Returns(true);
-        var logConfigurationFactoryMock = new Mock<ILogConfigurationFactory>();
-        logConfigurationFactoryMock.Setup(f => f.Create()).Returns(logConfigurationMock.Object);
-        LogConfigurationFactory = logConfigurationFactoryMock.Object;
+        LogConfigurationFactory = container.Resolve<ILogConfigurationFactory>();
     }
 
     [TestInitialize]
