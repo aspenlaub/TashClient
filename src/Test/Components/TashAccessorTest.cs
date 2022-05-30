@@ -19,7 +19,7 @@ namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Test.Components;
 public class TashAccessorTest {
     private readonly IDvinRepository DvinRepository;
     private readonly ISimpleLogger SimpleLogger;
-    private readonly ILogConfigurationFactory LogConfigurationFactory;
+    private readonly ILogConfiguration LogConfiguration;
     private TashAccessor Sut;
 
     public TashAccessorTest() {
@@ -27,12 +27,12 @@ public class TashAccessorTest {
         var container = builder.Build();
         DvinRepository = container.Resolve<IDvinRepository>();
         SimpleLogger = container.Resolve<ISimpleLogger>();
-        LogConfigurationFactory = container.Resolve<ILogConfigurationFactory>();
+        LogConfiguration = container.Resolve<ILogConfiguration>();
     }
 
     [TestInitialize]
     public void Initialize() {
-        Sut = new TashAccessor(DvinRepository, SimpleLogger, LogConfigurationFactory);
+        Sut = new TashAccessor(DvinRepository, SimpleLogger, LogConfiguration);
     }
 
     [TestMethod]

@@ -25,27 +25,23 @@ public class TashAccessor : ITashAccessor {
 
     protected readonly IDvinRepository DvinRepository;
     private readonly ISimpleLogger SimpleLogger;
-    private readonly string LogId;
     private readonly bool DetailedLogging;
 
-    public TashAccessor(IDvinRepository dvinRepository, ISimpleLogger simpleLogger, ILogConfigurationFactory logConfigurationFactory) {
+    public TashAccessor(IDvinRepository dvinRepository, ISimpleLogger simpleLogger, ILogConfiguration logConfiguration) {
         DvinRepository = dvinRepository;
         SimpleLogger = simpleLogger;
-        var logConfiguration = logConfigurationFactory.Create();
-        SimpleLogger.LogSubFolder = logConfiguration.LogSubFolder;
-        LogId = logConfiguration.LogId;
         DetailedLogging = logConfiguration.DetailedLogging;
     }
 
     public async Task<DvinApp> GetTashAppAsync(IErrorsAndInfos errorsAndInfos) {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), SimpleLogger.LogId))) {
             SimpleLogger.LogInformation("Returning tash app");
             return await DvinRepository.LoadAsync(TashAppId, errorsAndInfos);
         }
     }
 
     public async Task<IErrorsAndInfos> EnsureTashAppIsRunningAsync() {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), SimpleLogger.LogId))) {
             SimpleLogger.LogInformation("Ensuring tash app is running");
             var errorsAndInfos = new ErrorsAndInfos();
             try {
@@ -91,7 +87,7 @@ public class TashAccessor : ITashAccessor {
     }
 
     public async Task<IList<ControllableProcess>> GetControllableProcessesAsync() {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), SimpleLogger.LogId))) {
             SimpleLogger.LogInformation("Get controllable processes");
             var context = new DefaultContainer(new Uri(BaseUrl));
             var processes = await context.ControllableProcesses.ExecuteAsync();
@@ -101,7 +97,7 @@ public class TashAccessor : ITashAccessor {
     }
 
     public async Task<ControllableProcess> GetControllableProcessAsync(int processId) {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), SimpleLogger.LogId))) {
             SimpleLogger.LogInformation($"Get controllable process with id={processId}");
             var context = new DefaultContainer(new Uri(BaseUrl));
             if (!(await ProcessExists(context, processId)).YesNo) {
@@ -116,7 +112,7 @@ public class TashAccessor : ITashAccessor {
     }
 
     public async Task<HttpStatusCode> PutControllableProcessAsync(Process process) {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), SimpleLogger.LogId))) {
             SimpleLogger.LogInformation($"Put controllable process with id={process.Id}");
             var context = new DefaultContainer(new Uri(BaseUrl));
             ControllableProcess controllableProcess;
@@ -147,7 +143,7 @@ public class TashAccessor : ITashAccessor {
     }
 
     public async Task<HttpStatusCode> ConfirmAliveAsync(int processId, DateTime now, ControllableProcessStatus status) {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), SimpleLogger.LogId))) {
             SimpleLogger.LogInformation($"Confirm that process with id={processId} is alive");
             var context = new DefaultContainer(new Uri(BaseUrl));
             var processExists = await ProcessExists(context, processId);
@@ -173,7 +169,7 @@ public class TashAccessor : ITashAccessor {
     }
 
     public async Task<HttpStatusCode> ConfirmDeadAsync(int processId) {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), SimpleLogger.LogId))) {
             SimpleLogger.LogInformation($"Confirm that process with id={processId} is dead");
             return await ConfirmAliveAsync(processId, DateTime.Now, ControllableProcessStatus.Dead);
         }
@@ -184,7 +180,7 @@ public class TashAccessor : ITashAccessor {
     }
 
     public async Task<IList<ControllableProcessTask>> GetControllableProcessTasksAsync() {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), SimpleLogger.LogId))) {
             SimpleLogger.LogInformation("Get controllable process tasks");
             var context = new DefaultContainer(new Uri(BaseUrl));
             var processTasks = await context.ControllableProcessTasks.ExecuteAsync();
@@ -194,7 +190,7 @@ public class TashAccessor : ITashAccessor {
     }
 
     public async Task<ControllableProcessTask> GetControllableProcessTaskAsync(Guid taskId) {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), SimpleLogger.LogId))) {
             if (DetailedLogging) {
                 SimpleLogger.LogInformation($"Get controllable process task with id={taskId}");
             }
@@ -213,7 +209,7 @@ public class TashAccessor : ITashAccessor {
     }
 
     public async Task<HttpStatusCode> PutControllableProcessTaskAsync(ControllableProcessTask processTask) {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), SimpleLogger.LogId))) {
             SimpleLogger.LogInformation($"Put controllable process task with id={processTask.Id}");
             var context = new DefaultContainer(new Uri(BaseUrl));
             ControllableProcessTask controllableProcessTask;
@@ -251,7 +247,7 @@ public class TashAccessor : ITashAccessor {
     }
 
     public async Task<HttpStatusCode> ConfirmStatusAsync(Guid taskId, ControllableProcessTaskStatus status, string text, string errorMessage) {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), SimpleLogger.LogId))) {
             SimpleLogger.LogInformation($"Confirm status {Enum.GetName(typeof(ControllableProcessStatus), status)} for task id={taskId}");
 
             DefaultContainer context;
@@ -314,7 +310,7 @@ public class TashAccessor : ITashAccessor {
     }
 
     public async Task<ControllableProcessTask> PickRequestedTask(int processId) {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), SimpleLogger.LogId))) {
             SimpleLogger.LogInformation($"Get requested task for process with id={processId}");
             var tasks = await GetControllableProcessTasksAsync();
             return tasks.FirstOrDefault(t => t.ProcessId == processId && t.Status == ControllableProcessTaskStatus.Requested);
@@ -350,7 +346,7 @@ public class TashAccessor : ITashAccessor {
         const int internalInMilliSeconds = 100;
         ControllableProcessTask task;
 
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(TashAccessor), SimpleLogger.LogId))) {
             SimpleLogger.LogInformation($"Awaiting completion of task with id={taskId}");
             do {
                 await Wait.UntilAsync(async () => {
