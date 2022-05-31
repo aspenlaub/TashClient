@@ -20,6 +20,7 @@ public class TashAccessorTest {
     private readonly IDvinRepository DvinRepository;
     private readonly ISimpleLogger SimpleLogger;
     private readonly ILogConfiguration LogConfiguration;
+    private readonly IMethodNamesFromStackFramesExtractor MethodNamesFromStackFramesExtractor;
     private TashAccessor Sut;
 
     public TashAccessorTest() {
@@ -28,11 +29,12 @@ public class TashAccessorTest {
         DvinRepository = container.Resolve<IDvinRepository>();
         SimpleLogger = container.Resolve<ISimpleLogger>();
         LogConfiguration = container.Resolve<ILogConfiguration>();
+        MethodNamesFromStackFramesExtractor = new MethodNamesFromStackFramesExtractor();
     }
 
     [TestInitialize]
     public void Initialize() {
-        Sut = new TashAccessor(DvinRepository, SimpleLogger, LogConfiguration);
+        Sut = new TashAccessor(DvinRepository, SimpleLogger, LogConfiguration, MethodNamesFromStackFramesExtractor);
     }
 
     [TestMethod]
