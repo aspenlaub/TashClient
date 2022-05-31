@@ -69,7 +69,7 @@ public class TashAccessor : ITashAccessor {
             tashApp.Start(fileSystemService, errorsAndInfos);
             if (errorsAndInfos.AnyErrors()) {
                 SimpleLogger.LogInformationWithCallStack("Could not start tash app", methodNamesFromStack);
-                errorsAndInfos.Errors.ToList().ForEach(e => SimpleLogger.LogError(e));
+                errorsAndInfos.Errors.ToList().ForEach(e => SimpleLogger.LogErrorWithCallStack(e, methodNamesFromStack));
                 return errorsAndInfos;
             }
 
@@ -84,7 +84,7 @@ public class TashAccessor : ITashAccessor {
             } catch {
                 const string errorMessage = "Tash started but not answering";
                 errorsAndInfos.Errors.Add(errorMessage); // Should this occur regularly, maybe the Tash process can be killed
-                SimpleLogger.LogError(errorMessage);
+                SimpleLogger.LogErrorWithCallStack(errorMessage, methodNamesFromStack);
             }
 
             return errorsAndInfos;
@@ -277,7 +277,7 @@ public class TashAccessor : ITashAccessor {
                     SimpleLogger.LogInformationWithCallStack($"Select task with id={taskId} for update", methodNamesFromStack);
                     controllableProcessTask = await context.ControllableProcessTasks.ByKey(taskId).GetValueAsync();
                 } catch {
-                    SimpleLogger.LogError($"Could not select task with id={taskId} for update, trying again");
+                    SimpleLogger.LogErrorWithCallStack($"Could not select task with id={taskId} for update, trying again", methodNamesFromStack);
                     wasExceptionThrown = true;
                 }
             } while (wasExceptionThrown);
