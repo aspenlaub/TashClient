@@ -16,7 +16,7 @@ using Aspenlaub.Net.GitHub.CSharp.Dvin.Interfaces;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Extensions;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Helpers;
 using Aspenlaub.Net.GitHub.CSharp.TashClient.Entities;
-using Microsoft.Extensions.Logging;
+
 // ReSharper disable EmptyGeneralCatchClause
 
 namespace Aspenlaub.Net.GitHub.CSharp.TashClient.Components;
@@ -37,7 +37,7 @@ public class TashAccessor : ITashAccessor {
     }
 
     public async Task<DvinApp> GetTashAppAsync(IErrorsAndInfos errorsAndInfos) {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(GetTashAppAsync), SimpleLogger.LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.CreateWithRandomId(nameof(GetTashAppAsync)))) {
             var methodNamesFromStack = MethodNamesFromStackFramesExtractor.ExtractMethodNamesFromStackFrames();
             SimpleLogger.LogInformationWithCallStack("Returning tash app", methodNamesFromStack);
             return await DvinRepository.LoadAsync(TashAppId, errorsAndInfos);
@@ -45,7 +45,7 @@ public class TashAccessor : ITashAccessor {
     }
 
     public async Task<IErrorsAndInfos> EnsureTashAppIsRunningAsync() {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(EnsureTashAppIsRunningAsync), SimpleLogger.LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.CreateWithRandomId(nameof(EnsureTashAppIsRunningAsync)))) {
             var methodNamesFromStack = MethodNamesFromStackFramesExtractor.ExtractMethodNamesFromStackFrames();
             SimpleLogger.LogInformationWithCallStack("Ensuring tash app is running", methodNamesFromStack);
             var errorsAndInfos = new ErrorsAndInfos();
@@ -92,7 +92,7 @@ public class TashAccessor : ITashAccessor {
     }
 
     public async Task<IList<ControllableProcess>> GetControllableProcessesAsync() {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(GetControllableProcessesAsync), SimpleLogger.LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.CreateWithRandomId(nameof(GetControllableProcessesAsync)))) {
             var methodNamesFromStack = MethodNamesFromStackFramesExtractor.ExtractMethodNamesFromStackFrames();
             SimpleLogger.LogInformationWithCallStack("Get controllable processes", methodNamesFromStack);
             var context = new DefaultContainer(new Uri(BaseUrl));
@@ -103,7 +103,7 @@ public class TashAccessor : ITashAccessor {
     }
 
     public async Task<ControllableProcess> GetControllableProcessAsync(int processId) {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(GetControllableProcessAsync), SimpleLogger.LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.CreateWithRandomId(nameof(GetControllableProcessAsync)))) {
             var methodNamesFromStack = MethodNamesFromStackFramesExtractor.ExtractMethodNamesFromStackFrames();
             SimpleLogger.LogInformationWithCallStack($"Get controllable process with id={processId}", methodNamesFromStack);
             var context = new DefaultContainer(new Uri(BaseUrl));
@@ -119,7 +119,7 @@ public class TashAccessor : ITashAccessor {
     }
 
     public async Task<HttpStatusCode> PutControllableProcessAsync(Process process) {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(PutControllableProcessAsync), SimpleLogger.LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.CreateWithRandomId(nameof(PutControllableProcessAsync)))) {
             var methodNamesFromStack = MethodNamesFromStackFramesExtractor.ExtractMethodNamesFromStackFrames();
             SimpleLogger.LogInformationWithCallStack($"Put controllable process with id={process.Id}", methodNamesFromStack);
             var context = new DefaultContainer(new Uri(BaseUrl));
@@ -151,7 +151,7 @@ public class TashAccessor : ITashAccessor {
     }
 
     public async Task<HttpStatusCode> ConfirmAliveAsync(int processId, DateTime now, ControllableProcessStatus status) {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(ConfirmAliveAsync), SimpleLogger.LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.CreateWithRandomId(nameof(ConfirmAliveAsync)))) {
             var methodNamesFromStack = MethodNamesFromStackFramesExtractor.ExtractMethodNamesFromStackFrames();
             SimpleLogger.LogInformationWithCallStack($"Confirm that process with id={processId} is alive", methodNamesFromStack);
             var context = new DefaultContainer(new Uri(BaseUrl));
@@ -178,7 +178,7 @@ public class TashAccessor : ITashAccessor {
     }
 
     public async Task<HttpStatusCode> ConfirmDeadAsync(int processId) {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(ConfirmDeadAsync), SimpleLogger.LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.CreateWithRandomId(nameof(ConfirmDeadAsync)))) {
             var methodNamesFromStack = MethodNamesFromStackFramesExtractor.ExtractMethodNamesFromStackFrames();
             SimpleLogger.LogInformationWithCallStack($"Confirm that process with id={processId} is dead", methodNamesFromStack);
             return await ConfirmAliveAsync(processId, DateTime.Now, ControllableProcessStatus.Dead);
@@ -190,7 +190,7 @@ public class TashAccessor : ITashAccessor {
     }
 
     public async Task<IList<ControllableProcessTask>> GetControllableProcessTasksAsync() {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(GetControllableProcessTasksAsync), SimpleLogger.LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.CreateWithRandomId(nameof(GetControllableProcessTasksAsync)))) {
             var methodNamesFromStack = MethodNamesFromStackFramesExtractor.ExtractMethodNamesFromStackFrames();
             SimpleLogger.LogInformationWithCallStack("Get controllable process tasks", methodNamesFromStack);
             var context = new DefaultContainer(new Uri(BaseUrl));
@@ -201,7 +201,7 @@ public class TashAccessor : ITashAccessor {
     }
 
     public async Task<ControllableProcessTask> GetControllableProcessTaskAsync(Guid taskId) {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(GetControllableProcessTaskAsync), SimpleLogger.LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.CreateWithRandomId(nameof(GetControllableProcessTaskAsync)))) {
             var methodNamesFromStack = MethodNamesFromStackFramesExtractor.ExtractMethodNamesFromStackFrames();
             if (DetailedLogging) {
                 SimpleLogger.LogInformationWithCallStack($"Get controllable process task with id={taskId}", methodNamesFromStack);
@@ -221,7 +221,7 @@ public class TashAccessor : ITashAccessor {
     }
 
     public async Task<HttpStatusCode> PutControllableProcessTaskAsync(ControllableProcessTask processTask) {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(PutControllableProcessTaskAsync), SimpleLogger.LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.CreateWithRandomId(nameof(PutControllableProcessTaskAsync)))) {
             var methodNamesFromStack = MethodNamesFromStackFramesExtractor.ExtractMethodNamesFromStackFrames();
             SimpleLogger.LogInformationWithCallStack($"Put controllable process task with id={processTask.Id}", methodNamesFromStack);
             var context = new DefaultContainer(new Uri(BaseUrl));
@@ -260,7 +260,7 @@ public class TashAccessor : ITashAccessor {
     }
 
     public async Task<HttpStatusCode> ConfirmStatusAsync(Guid taskId, ControllableProcessTaskStatus status, string text, string errorMessage) {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(ConfirmStatusAsync), SimpleLogger.LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.CreateWithRandomId(nameof(ConfirmStatusAsync)))) {
             var methodNamesFromStack = MethodNamesFromStackFramesExtractor.ExtractMethodNamesFromStackFrames();
             SimpleLogger.LogInformationWithCallStack($"Confirm status {Enum.GetName(typeof(ControllableProcessStatus), status)} for task id={taskId}", methodNamesFromStack);
 
@@ -324,7 +324,7 @@ public class TashAccessor : ITashAccessor {
     }
 
     public async Task<ControllableProcessTask> PickRequestedTask(int processId) {
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(PickRequestedTask), SimpleLogger.LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.CreateWithRandomId(nameof(PickRequestedTask)))) {
             var methodNamesFromStack = MethodNamesFromStackFramesExtractor.ExtractMethodNamesFromStackFrames();
             SimpleLogger.LogInformationWithCallStack($"Get requested task for process with id={processId}", methodNamesFromStack);
             var tasks = await GetControllableProcessTasksAsync();
@@ -361,7 +361,7 @@ public class TashAccessor : ITashAccessor {
         const int internalInMilliSeconds = 100;
         ControllableProcessTask task;
 
-        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(AwaitCompletionAsync), SimpleLogger.LogId))) {
+        using (SimpleLogger.BeginScope(SimpleLoggingScopeId.CreateWithRandomId(nameof(AwaitCompletionAsync)))) {
             var methodNamesFromStack = MethodNamesFromStackFramesExtractor.ExtractMethodNamesFromStackFrames();
             SimpleLogger.LogInformationWithCallStack($"Awaiting completion of task with id={taskId}", methodNamesFromStack);
             do {
