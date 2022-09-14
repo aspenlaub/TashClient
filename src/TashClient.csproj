@@ -41,7 +41,7 @@
     <PackageReference Include="Microsoft.OData.Core" Version="7.12.2" />
     <PackageReference Include="Microsoft.OData.Edm" Version="7.12.2" />
     <PackageReference Include="Microsoft.Spatial" Version="7.12.2" />
-    <PackageReference Include="System.Text.Json" Version="6.0.5" />
+    <PackageReference Include="System.Text.Json" Version="6.0.6" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
