@@ -1,0 +1,45 @@
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:DataServices>
+    <Schema Namespace="Aspenlaub.Net.GitHub.CSharp.Tash" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityType Name="ControllableProcess">
+        <Key>
+          <PropertyRef Name="ProcessId" />
+        </Key>
+        <Property Name="ProcessId" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Title" Type="Edm.String" />
+        <Property Name="LaunchCommand" Type="Edm.String" />
+        <Property Name="Status" Type="Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessStatus" Nullable="false" />
+        <Property Name="ConfirmedAt" Type="Edm.DateTimeOffset" Nullable="false" />
+      </EntityType>
+      <EntityType Name="ControllableProcessTask">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Guid" Nullable="false" />
+        <Property Name="ProcessId" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Type" Type="Edm.String" />
+        <Property Name="ControlName" Type="Edm.String" />
+        <Property Name="Text" Type="Edm.String" />
+        <Property Name="Status" Type="Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTaskStatus" Nullable="false" />
+        <Property Name="ErrorMessage" Type="Edm.String" />
+      </EntityType>
+      <EnumType Name="ControllableProcessStatus">
+        <Member Name="Idle" Value="0" />
+        <Member Name="Busy" Value="1" />
+        <Member Name="Dead" Value="2" />
+        <Member Name="DoesNotExist" Value="3" />
+      </EnumType>
+      <EnumType Name="ControllableProcessTaskStatus">
+        <Member Name="Requested" Value="0" />
+        <Member Name="Processing" Value="1" />
+        <Member Name="BadRequest" Value="2" />
+        <Member Name="Completed" Value="3" />
+        <Member Name="Failed" Value="4" />
+      </EnumType>
+      <EntityContainer Name="DefaultContainer">
+        <EntitySet Name="ControllableProcesses" EntityType="Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcess" />
+        <EntitySet Name="ControllableProcessTasks" EntityType="Aspenlaub.Net.GitHub.CSharp.Tash.ControllableProcessTask" />
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

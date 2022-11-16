@@ -27,6 +27,7 @@
     <None Remove="Test\**" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Connected Services\Tash OData Service\Tash OData ServiceCsdl.xml" />
     <None Remove="packageicon.ico" />
     <None Remove="packageicon.png" />
   </ItemGroup>
@@ -36,11 +37,15 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Connected Services\Tash OData Service\Tash OData ServiceCsdl.xml" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Dvin" Version="2.0.1206.478" />
     <PackageReference Include="Microsoft.OData.Client" Version="7.12.5" />
     <PackageReference Include="Microsoft.OData.Core" Version="7.12.5" />
     <PackageReference Include="Microsoft.OData.Edm" Version="7.12.5" />
     <PackageReference Include="Microsoft.Spatial" Version="7.12.5" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Text.Json" Version="7.0.0" />
   </ItemGroup>
   <ItemGroup>
