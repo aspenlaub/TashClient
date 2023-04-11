@@ -59,6 +59,15 @@ public class TashAccessor : ITashAccessor {
             } catch (Exception e) {
                 LogException("Exception was thrown, tash app probably is not running", e, methodNamesFromStack);
             }
+            try {
+                var processTasks = await GetControllableProcessTasksAsync();
+                if (processTasks != null) {
+                    _SimpleLogger.LogInformationWithCallStack("Tash app is running", methodNamesFromStack);
+                    return errorsAndInfos;
+                }
+            } catch (Exception e) {
+                LogException("Exception was thrown, tash app probably is not running", e, methodNamesFromStack);
+            }
 
             var tashApp = await GetTashAppAsync(errorsAndInfos);
             if (errorsAndInfos.AnyErrors()) {
