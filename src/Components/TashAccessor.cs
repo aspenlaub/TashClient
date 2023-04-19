@@ -390,11 +390,19 @@ public class TashAccessor : ITashAccessor {
             _SimpleLogger.LogInformationWithCallStack($"Awaiting completion of task with id={taskId}", methodNamesFromStack);
             do {
                 await Wait.UntilAsync(async () => {
-                    task = await GetControllableProcessTaskAsync(taskId);
+                    try {
+                        task = await GetControllableProcessTaskAsync(taskId);
+                    } catch {
+                        task = null;
+                    }
                     return task?.Status == ControllableProcessTaskStatus.Completed;
                 }, TimeSpan.FromMilliseconds(internalInMilliSeconds));
 
-                task = await GetControllableProcessTaskAsync(taskId);
+                try {
+                    task = await GetControllableProcessTaskAsync(taskId);
+                } catch {
+                    task = null;
+                }
                 if (task != null) {
                     if (task.Status == ControllableProcessTaskStatus.Completed) {
                         _SimpleLogger.LogInformationWithCallStack($"Task with id={taskId} is complete", methodNamesFromStack);
