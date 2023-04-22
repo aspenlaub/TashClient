@@ -195,9 +195,14 @@ public class TashAccessor : ITashAccessor {
             controllableProcess.ConfirmedAt = now;
             controllableProcess.Status = status;
             context.UpdateObject(controllableProcess);
-            var response = await context.SaveChangesAsync(SaveChangesOptions.None);
-            var statusCode = response.Select(r => (HttpStatusCode)r.StatusCode).FirstOrDefault();
-            return statusCode;
+            try {
+                var response = await context.SaveChangesAsync(SaveChangesOptions.None);
+                var statusCode = response.Select(r => (HttpStatusCode)r.StatusCode).FirstOrDefault();
+                return statusCode;
+            } catch (Exception e) {
+                LogException("Exception was thrown while saving changes", e, methodNamesFromStack);
+                return HttpStatusCode.InternalServerError;
+            }
         }
     }
 
