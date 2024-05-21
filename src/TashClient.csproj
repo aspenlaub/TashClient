@@ -41,11 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Dvin" Version="2.0.1713.357" />
-    <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="8.0.4" />
-    <PackageReference Include="Microsoft.OData.Client" Version="7.21.0" />
-    <PackageReference Include="Microsoft.OData.Core" Version="7.21.0" />
-    <PackageReference Include="Microsoft.OData.Edm" Version="7.21.0" />
-    <PackageReference Include="Microsoft.Spatial" Version="7.21.0" />
+    <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="8.0.5" />
+    <PackageReference Include="Microsoft.OData.Client" Version="7.21.1" />
+    <PackageReference Include="Microsoft.OData.Core" Version="7.21.1" />
+    <PackageReference Include="Microsoft.OData.Edm" Version="7.21.1" />
+    <PackageReference Include="Microsoft.Spatial" Version="7.21.1" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Text.Json" Version="8.0.3" />
   </ItemGroup>
