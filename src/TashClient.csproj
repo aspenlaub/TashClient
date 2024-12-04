@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <AssemblyName>Aspenlaub.Net.GitHub.CSharp.TashClient</AssemblyName>
     <RootNamespace>Aspenlaub.Net.GitHub.CSharp.TashClient</RootNamespace>
     <GenerateBuildInfoConfigFile>false</GenerateBuildInfoConfigFile>
@@ -40,7 +40,7 @@
     <EmbeddedResource Include="Connected Services\Tash OData Service\Tash OData ServiceCsdl.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Dvin" Version="2.0.1955.563" />
+    <PackageReference Include="Dvin" Version="2.0.1960.433" />
     <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="9.0.0" />
     <PackageReference Include="Microsoft.OData.Client" Version="8.2.2" />
     <PackageReference Include="Microsoft.OData.Core" Version="8.2.2" />
