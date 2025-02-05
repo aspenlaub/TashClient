@@ -389,7 +389,13 @@ public class TashAccessor(IDvinRepository dvinRepository, ISimpleLogger simpleLo
             IList<string> methodNamesFromStack = methodNamesFromStackFramesExtractor.ExtractMethodNamesFromStackFrames();
             simpleLogger.LogInformationWithCallStack($"Awaiting completion of task with id={taskId}", methodNamesFromStack);
             do {
+                int secondsToAttemptWhileRequestedOrProcessing = Math.Max(1, milliSecondsToAttemptWhileRequestedOrProcessing / 1000);
+                simpleLogger.LogInformationWithCallStack($"{secondsToAttemptWhileRequestedOrProcessing} second/-s left for completion of task with id={taskId}", methodNamesFromStack);
+                int waitCounter = 0;
                 await Wait.UntilAsync(async () => {
+                    if (waitCounter ++ % 10 == 0) {
+                        simpleLogger.LogInformationWithCallStack("Checking for completion", methodNamesFromStack);
+                    }
                     try {
                         task = await GetControllableProcessTaskAsync(taskId);
                     } catch {
@@ -417,7 +423,8 @@ public class TashAccessor(IDvinRepository dvinRepository, ISimpleLogger simpleLo
                 }
 
                 milliSecondsToAttemptWhileRequestedOrProcessing -= internalInMilliSeconds;
-            } while (0 < milliSecondsToAttemptWhileRequestedOrProcessing && (task == null || task.Status == ControllableProcessTaskStatus.Processing || task.Status == ControllableProcessTaskStatus.Requested));
+            } while (0 < milliSecondsToAttemptWhileRequestedOrProcessing
+                     && (task == null || task.Status == ControllableProcessTaskStatus.Processing || task.Status == ControllableProcessTaskStatus.Requested));
 
             simpleLogger.LogInformationWithCallStack($"Returning incomplete task with id={taskId}", methodNamesFromStack);
             return task;
