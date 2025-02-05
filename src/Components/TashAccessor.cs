@@ -388,9 +388,9 @@ public class TashAccessor(IDvinRepository dvinRepository, ISimpleLogger simpleLo
         using (simpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(AwaitCompletionAsync)))) {
             IList<string> methodNamesFromStack = methodNamesFromStackFramesExtractor.ExtractMethodNamesFromStackFrames();
             simpleLogger.LogInformationWithCallStack($"Awaiting completion of task with id={taskId}", methodNamesFromStack);
+            var tryUntil = DateTime.Now.AddMilliseconds(milliSecondsToAttemptWhileRequestedOrProcessing);
             do {
-                int secondsToAttemptWhileRequestedOrProcessing = Math.Max(1, milliSecondsToAttemptWhileRequestedOrProcessing / 1000);
-                simpleLogger.LogInformationWithCallStack($"{secondsToAttemptWhileRequestedOrProcessing} second/-s left for completion of task with id={taskId}", methodNamesFromStack);
+                simpleLogger.LogInformationWithCallStack($"Wait until {tryUntil:HH:mm:ss} for completion of task with id={taskId}", methodNamesFromStack);
                 int waitCounter = 0;
                 await Wait.UntilAsync(async () => {
                     if (waitCounter ++ % 10 == 0) {
@@ -409,21 +409,24 @@ public class TashAccessor(IDvinRepository dvinRepository, ISimpleLogger simpleLo
                 } catch {
                     task = null;
                 }
-                if (task != null) {
-                    if (task.Status == ControllableProcessTaskStatus.Completed) {
-                        simpleLogger.LogInformationWithCallStack($"Task with id={taskId} is complete", methodNamesFromStack);
-                        return task;
-                    }
 
-                    ControllableProcess process = await GetControllableProcessAsync(task.ProcessId);
-                    if (process?.Status == ControllableProcessStatus.Dead) {
-                        simpleLogger.LogInformationWithCallStack($"Process with id={task.ProcessId} is dead for task with id={taskId}", methodNamesFromStack);
-                        return task;
-                    }
+                if (task == null) {
+                    continue;
                 }
 
-                milliSecondsToAttemptWhileRequestedOrProcessing -= internalInMilliSeconds;
-            } while (0 < milliSecondsToAttemptWhileRequestedOrProcessing
+                if (task.Status == ControllableProcessTaskStatus.Completed) {
+                    simpleLogger.LogInformationWithCallStack($"Task with id={taskId} is complete", methodNamesFromStack);
+                    return task;
+                }
+
+                ControllableProcess process = await GetControllableProcessAsync(task.ProcessId);
+                if (process?.Status != ControllableProcessStatus.Dead) {
+                    continue;
+                }
+
+                simpleLogger.LogInformationWithCallStack($"Process with id={task.ProcessId} is dead for task with id={taskId}", methodNamesFromStack);
+                return task;
+            } while (DateTime.Now < tryUntil
                      && (task == null || task.Status == ControllableProcessTaskStatus.Processing || task.Status == ControllableProcessTaskStatus.Requested));
 
             simpleLogger.LogInformationWithCallStack($"Returning incomplete task with id={taskId}", methodNamesFromStack);
