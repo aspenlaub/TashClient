@@ -42,10 +42,10 @@
   <ItemGroup>
     <PackageReference Include="Dvin" Version="2.0.2247.493" />
     <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="9.0.10" />
-    <PackageReference Include="Microsoft.OData.Client" Version="8.4.0" />
-    <PackageReference Include="Microsoft.OData.Core" Version="8.4.0" />
-    <PackageReference Include="Microsoft.OData.Edm" Version="8.4.0" />
-    <PackageReference Include="Microsoft.Spatial" Version="8.4.0" />
+    <PackageReference Include="Microsoft.OData.Client" Version="8.4.2" />
+    <PackageReference Include="Microsoft.OData.Core" Version="8.4.2" />
+    <PackageReference Include="Microsoft.OData.Edm" Version="8.4.2" />
+    <PackageReference Include="Microsoft.Spatial" Version="8.4.2" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Text.Json" Version="9.0.10" />
   </ItemGroup>
