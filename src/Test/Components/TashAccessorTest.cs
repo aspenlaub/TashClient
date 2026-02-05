@@ -27,7 +27,7 @@ public class TashAccessorTest {
     private TashAccessor _Sut;
 
     public TashAccessorTest() {
-        ContainerBuilder builder = new ContainerBuilder().UseDvinAndPegh("TashClient", new DummyCsArgumentPrompter());
+        ContainerBuilder builder = new ContainerBuilder().UseDvinAndPegh("TashClient");
         IContainer container = builder.Build();
         _DvinRepository = container.Resolve<IDvinRepository>();
         _SimpleLogger = container.Resolve<ISimpleLogger>();
@@ -154,7 +154,7 @@ public class TashAccessorTest {
         Assert.AreEqual(errorMessage, processTask.ErrorMessage);
     }
 
-    private ControllableProcessTask CreateControllableProcessTask() {
+    private static ControllableProcessTask CreateControllableProcessTask() {
         return new ControllableProcessTask {
             Id = Guid.NewGuid(),
             ProcessId = new Random().Next(1, 32767),
@@ -179,7 +179,7 @@ public class TashAccessorTest {
         ControllableProcess process = await _Sut.GetControllableProcessAsync(currentProcess.Id);
         Assert.IsNotNull(process);
         Assert.AreEqual(ControllableProcessStatus.Dead, process.Status);
-        Assert.IsTrue(process.ConfirmedAt >= now);
+        Assert.IsGreaterThanOrEqualTo(now, process.ConfirmedAt);
     }
 
     [TestMethod]
@@ -196,7 +196,7 @@ public class TashAccessorTest {
         ControllableProcess process = await _Sut.GetControllableProcessAsync(currentProcess.Id);
         Assert.IsNotNull(process);
         Assert.AreEqual(ControllableProcessStatus.Dead, process.Status);
-        Assert.IsTrue(process.ConfirmedAt >= now);
+        Assert.IsGreaterThanOrEqualTo(now, process.ConfirmedAt);
     }
 
     [TestMethod]
@@ -275,7 +275,7 @@ public class TashAccessorTest {
         DateTime now = DateTime.Now;
         ControllableProcessTask task = await _Sut.AwaitCompletionAsync(controllableProcessTask.Id, 1000);
         double elapsedMilliSeconds = DateTime.Now.Subtract(now).TotalMilliseconds;
-        Assert.IsTrue(elapsedMilliSeconds >= 1000);
+        Assert.IsGreaterThanOrEqualTo(1000, elapsedMilliSeconds);
         Assert.AreEqual(ControllableProcessTaskStatus.Processing, task.Status);
 
         controllableProcessTask.Status = ControllableProcessTaskStatus.Completed;
@@ -285,7 +285,7 @@ public class TashAccessorTest {
         now = DateTime.Now;
         task = await _Sut.AwaitCompletionAsync(controllableProcessTask.Id, 1000);
         elapsedMilliSeconds = DateTime.Now.Subtract(now).TotalMilliseconds;
-        Assert.IsTrue(elapsedMilliSeconds < 100);
+        Assert.IsLessThan(100, elapsedMilliSeconds);
         Assert.AreEqual(ControllableProcessTaskStatus.Completed, task.Status);
     }
 }
