@@ -16,6 +16,8 @@ using System.Threading.Tasks;
 using Aspenlaub.Net.GitHub.CSharp.Dvin.Interfaces;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Extensions;
 using Aspenlaub.Net.GitHub.CSharp.Pegh.Helpers;
+using Aspenlaub.Net.GitHub.CSharp.Skladasu.Entities;
+using Aspenlaub.Net.GitHub.CSharp.Skladasu.Interfaces;
 using Aspenlaub.Net.GitHub.CSharp.TashClient.Entities;
 
 // ReSharper disable EmptyGeneralCatchClause
@@ -364,7 +366,7 @@ public class TashAccessor(IDvinRepository dvinRepository, ISimpleLogger simpleLo
     }
 
     public async Task<IFindIdleProcessResult> FindIdleProcess(Func<ControllableProcess, bool> condition) {
-        var processes = (await GetControllableProcessesAsync()).Where(p => condition(p)).ToList();
+        var processes = (await GetControllableProcessesAsync()).Where(condition).ToList();
         if (processes.Count == 0) { return new FindIdleProcessResult { BestProcessStatus = ControllableProcessStatus.DoesNotExist }; }
 
         IFindIdleProcessResult result = new FindIdleProcessResult();
@@ -388,7 +390,7 @@ public class TashAccessor(IDvinRepository dvinRepository, ISimpleLogger simpleLo
         using (simpleLogger.BeginScope(SimpleLoggingScopeId.Create(nameof(AwaitCompletionAsync)))) {
             IList<string> methodNamesFromStack = methodNamesFromStackFramesExtractor.ExtractMethodNamesFromStackFrames();
             simpleLogger.LogInformationWithCallStack($"Awaiting completion of task with id={taskId}", methodNamesFromStack);
-            var tryUntil = DateTime.Now.AddMilliseconds(milliSecondsToAttemptWhileRequestedOrProcessing);
+            DateTime tryUntil = DateTime.Now.AddMilliseconds(milliSecondsToAttemptWhileRequestedOrProcessing);
             do {
                 simpleLogger.LogInformationWithCallStack($"Wait until {tryUntil:HH:mm:ss} for completion of task with id={taskId}", methodNamesFromStack);
                 int waitCounter = 0;
