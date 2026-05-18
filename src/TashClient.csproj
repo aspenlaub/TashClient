@@ -40,8 +40,8 @@
     <EmbeddedResource Include="Connected Services\Tash OData Service\Tash OData ServiceCsdl.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Dvin" Version="2.0.2470.1083" />
-    <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="10.0.7" />
+    <PackageReference Include="Dvin" Version="2.0.2489.1159" />
+    <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="10.0.8" />
     <PackageReference Include="Microsoft.OData.Client" Version="8.4.3" />
     <PackageReference Include="Microsoft.OData.Core" Version="8.4.3" />
     <PackageReference Include="Microsoft.OData.Edm" Version="8.4.3" />
