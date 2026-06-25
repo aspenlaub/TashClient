@@ -16,6 +16,7 @@
     <RepositoryUrl>https://github.com/aspenlaub/TashClient.git</RepositoryUrl>
     <RepositoryBranch>master</RepositoryBranch>
     <PackageId>TashClient</PackageId>
+    <MSBuildEnableWorkloadResolver>false</MSBuildEnableWorkloadResolver>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
