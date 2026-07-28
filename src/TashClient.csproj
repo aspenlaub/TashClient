@@ -43,10 +43,10 @@
   <ItemGroup>
     <PackageReference Include="Dvin" Version="2.0.2550.438" />
     <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="10.0.10" />
-    <PackageReference Include="Microsoft.OData.Client" Version="8.4.4" />
-    <PackageReference Include="Microsoft.OData.Core" Version="8.4.4" />
-    <PackageReference Include="Microsoft.OData.Edm" Version="8.4.4" />
-    <PackageReference Include="Microsoft.Spatial" Version="8.4.4" />
+    <PackageReference Include="Microsoft.OData.Client" Version="9.0.0" />
+    <PackageReference Include="Microsoft.OData.Core" Version="9.0.0" />
+    <PackageReference Include="Microsoft.OData.Edm" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Spatial" Version="9.0.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
